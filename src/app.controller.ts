@@ -1,15 +1,26 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Request, Response as ResponseAnno } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Public } from './decorators/auth';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
   private readonly logger = new Logger(AppService.name);
+  @Public()
 
+  @Post()
   @Get()
-  getHello(): string {
+  getHello( @Body() data): string {
+    this.logger.log("GET APIasas", data)
+
     
-    this.logger.log("GET APIasdas")
     return this.appService.getHello();
   }
+  @Get('me')
+  getMe(@Request() req){
+    return req.user;
+
+  }
+
 }

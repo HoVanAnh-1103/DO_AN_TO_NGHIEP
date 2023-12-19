@@ -3,21 +3,33 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
-import { RoleModule } from './role/role.module';
-import { ReceiverModule } from './receiver/receiver.module';
-import { StudentOfClassModule } from './student-of-class/student-of-class.module';
-import { ClassModule } from './class/class.module';
-import { SessionInformationModule } from './session-information/session-information.module';
-import { NotificationModule } from './notification/notification.module';
-import { SubjectModule } from './subject/subject.module';
-import { RoomModule } from './room/room.module';
-import { ScheduleModule } from './schedule/schedule.module';
-import { LessionStatusModule } from './lession-status/lession-status.module';
-import { RequestModule } from './request/request.module';
-import { TypeScheduleModule } from './type-schedule/type-schedule.module';
-import { CategoryModule } from './category/category.module';
-import { RequestTypeModule } from './request-type/request-type.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ClassModule } from './modules/class/class.module';
+import { LessionStatusModule } from './modules/lession-status/lession-status.module';
+import { NotificationModule } from './modules/notification/notification.module';
+import { ReceiverModule } from './modules/receiver/receiver.module';
+import { RequestTypeModule } from './modules/request-type/request-type.module';
+import { RequestModule } from './modules/request/request.module';
+import { RoleModule } from './modules/role/role.module';
+import { RoomModule } from './modules/room/room.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
+import { SessionInformationModule } from './modules/session-information/session-information.module';
+import { StudentOfClassModule } from './modules/student-of-class/student-of-class.module';
+import { SubjectModule } from './modules/subject/subject.module';
+import { TypeScheduleModule } from './modules/type-schedule/type-schedule.module';
+
+import { AuthModule } from './modules/auth/auth.module';
+import { DataSource } from 'typeorm';
+
+import { Role } from './modules/role/entities/role.entity';
+import { UserModule } from './modules/user/user.module';
+import { User } from './modules/user/entities/user.entity';
+import { TypeSchedule } from './modules/type-schedule/entities/type-schedule.entity';
+import { Class } from './modules/class/entities/class.entity';
+import { Schedule } from './modules/schedule/entities/schedule.entity';
+import { Room } from './modules/room/entities/room.entity';
+
+
 
 @Module({
   imports: [
@@ -28,11 +40,13 @@ import { RequestTypeModule } from './request-type/request-type.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
+      username: 'root',
+      password: '12345',
       database: 'localhostdb',
-      entities: [],
-      synchronize: true,
+      entities: [User, Role, Class, Schedule, TypeSchedule, Room],
+      // synchronize: true,
+      autoLoadEntities: true,
+
     }),
     UserModule,
     RoleModule,
@@ -48,8 +62,12 @@ import { RequestTypeModule } from './request-type/request-type.module';
     RequestModule,
     TypeScheduleModule,
     CategoryModule,
-    RequestTypeModule],
+    RequestTypeModule,
+    AuthModule]
+  ,
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private dataSource: DataSource) { }
+}
