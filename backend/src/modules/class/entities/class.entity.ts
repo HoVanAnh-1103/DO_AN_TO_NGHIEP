@@ -12,8 +12,6 @@ export class Class {
     name: string
 
     @ManyToOne(() => User, (user) => user.classes, {
-        cascade: true,
-        onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'giaoVienId' })
     teacher: User
@@ -36,5 +34,8 @@ export class Class {
     @ManyToMany(() => Subject, subject => subject.classes, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({name: 'monHocId'})
     subject: Subject
+
+    @ManyToMany(() => User, (user) => user.classes)
+    students: User[];
 
 }

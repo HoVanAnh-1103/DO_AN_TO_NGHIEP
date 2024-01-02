@@ -18,7 +18,7 @@ export class Subject {
         cascade: true,
         onDelete: 'CASCADE',
     })
-    @JoinColumn({ name: "monHocId" })
+    @JoinColumn({ name: "danhMucId" })
     category: Category
 
     @OneToMany(() => Class, cls => cls.subject)

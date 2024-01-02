@@ -1,5 +1,6 @@
 import { Class } from "src/modules/class/entities/class.entity";
 import { Role } from "src/modules/role/entities/role.entity";
+import { Teacher } from "src/modules/teacher/entities/teacher.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -28,20 +29,28 @@ export class User {
   @ManyToMany(() => Role, (role) => role.name, {
     cascade: true,
   })
+  @JoinTable()
   roles: Role[];
 
   isAdmin?: boolean;
 
-  @OneToMany(() => Class, (classs) => classs.teacher)
-  @JoinTable()
-  classes: Class[];
+  // @OneToMany(() => Class, (classs) => classs.teacher)
+  // @JoinTable()
+  // classes: Class[];
+  @OneToMany(() => Teacher, (teacher) => teacher.user)
+  teacherInfo: Teacher
 
   @Column({ name: "diaChi", nullable: true, })
   address: string
 
-  @Column({name: 'trangTahi', default: true})
+  @Column({name: 'trangThai', default: true})
   active: boolean
   
+
+  @ManyToMany(() => Class, (cls) => cls.students, {
+    cascade: true,
+  })
+  classes: Class[];
 
 
   // @ManyToMany(() => Course, (course) => course.lecturers)

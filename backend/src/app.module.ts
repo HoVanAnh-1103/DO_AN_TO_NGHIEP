@@ -28,6 +28,10 @@ import { TypeSchedule } from './modules/type-schedule/entities/type-schedule.ent
 import { Class } from './modules/class/entities/class.entity';
 import { Schedule } from './modules/schedule/entities/schedule.entity';
 import { Room } from './modules/room/entities/room.entity';
+import { Subject } from './modules/subject/entities/subject.entity';
+import { Category } from './modules/category/entities/category.entity';
+import { TeacherModule } from './modules/teacher/teacher.module';
+import { Teacher } from './modules/teacher/entities/teacher.entity';
 
 
 
@@ -43,7 +47,9 @@ import { Room } from './modules/room/entities/room.entity';
       username: 'root',
       password: '12345',
       database: 'localhostdb',
-      entities: [User, Role, Class, Schedule, TypeSchedule, Room],
+      entities: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category, Teacher],
+      migrations: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category],
+
       // synchronize: true,
       autoLoadEntities: true,
 
@@ -63,7 +69,8 @@ import { Room } from './modules/room/entities/room.entity';
     TypeScheduleModule,
     CategoryModule,
     RequestTypeModule,
-    AuthModule]
+    AuthModule,
+    TeacherModule]
   ,
   controllers: [AppController],
   providers: [AppService],
