@@ -1,7 +1,7 @@
 import { Schedule } from "src/modules/schedule/entities/schedule.entity";
 import { Subject } from "src/modules/subject/entities/subject.entity";
 import { User } from "src/modules/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "lop" })
 export class Class {
@@ -19,7 +19,7 @@ export class Class {
     @Column({ name: "siSo" })
     size: Number
 
-    @OneToMany(() => Schedule, (schedule) => schedule.clases)
+    @OneToMany(() => Schedule, (schedule) => schedule.class)
     schedules?: Schedule[];
 
     @Column({ name: "batDau", nullable: true })
@@ -33,7 +33,8 @@ export class Class {
 
     @ManyToMany(() => Subject, subject => subject.classes, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({name: 'monHocId'})
-    subject: Subject
+    @JoinTable({ name: "lop_subjects_monhoc" })
+    subject: Subject[]
 
     @ManyToMany(() => User, (user) => user.classes)
     students: User[];

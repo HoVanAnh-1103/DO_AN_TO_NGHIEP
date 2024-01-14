@@ -14,9 +14,9 @@ export class Schedule {
     end: string
 
 
-    @OneToMany(() => Class, (cls) => cls.schedules)
+    @ManyToOne(() => Class, (cls) => cls.schedules)
     @JoinColumn({ name: 'lopId' })
-    clases: Class[]
+    class: Class[]
 
     @Column({ name: "ten" })
     ten: string

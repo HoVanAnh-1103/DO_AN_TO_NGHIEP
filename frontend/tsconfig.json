@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@access/*": [
+        "src/access/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ]
+    },
+    "isolatedModules": false,
+  },
+  "files": [
+    "globals.d.ts"
+  ],
+  "include": [
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.scss",
+  ], // Thêm *.scss vào đây,
+  "extends": "./tsconfig.paths.json"
+}

@@ -17,7 +17,17 @@ export class ClassService {
   }
 
   findAll() {
-    return this.classRepository.find({ where: { active: true } })
+    return this.classRepository.find({
+      where: { active: true },
+      relations: {
+        subject: true,
+        teacher: true,
+        schedules: { room: true }
+      },
+      select: {
+        teacher: { fullName: true },
+      }
+    })
   }
 
   findOne(id: number) {

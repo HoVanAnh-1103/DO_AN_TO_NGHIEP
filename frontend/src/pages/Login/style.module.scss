@@ -1,0 +1,34 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.wrapper {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    .sub-content {
+        height: 100%;
+        width: 50%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .left-content {
+        background-color: #5BB318;
+
+    }
+
+    .right-content{
+        .wrapper-form{
+            height: 500px;
+        }
+    }
+}
