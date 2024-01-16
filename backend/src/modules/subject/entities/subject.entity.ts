@@ -5,22 +5,26 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGe
 @Entity({ name: "monHoc" })
 export class Subject {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column({ name: "ten" })
-    name: string
+    name?: string
     @Column({ name: "moTa", nullable: true })
-    description: string;
+    description?: string;
     @Column({ name: 'trangThai', default: true })
-    active: boolean
+    active?: boolean
 
     @ManyToOne(() => Category, (category) => category.subjects, {
         cascade: true,
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: "danhMucId" })
-    category: Category
-
+    category?: Category
+    @Column({name: 'danhMucId'})
+    categoryId: number
     @OneToMany(() => Class, cls => cls.subject)
-    classes: Class[]
+    classes?: Class[]
+
+    @Column({name: 'lop'})
+    class?: number
 }

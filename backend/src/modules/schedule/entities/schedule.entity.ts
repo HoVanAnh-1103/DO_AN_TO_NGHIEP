@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 @Entity({ name: "lichHoc" })
 export class Schedule {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column({ type: 'time', name: 'batDau' })
     start: string;
@@ -17,7 +17,8 @@ export class Schedule {
     @ManyToOne(() => Class, (cls) => cls.schedules)
     @JoinColumn({ name: 'lopId' })
     class: Class[]
-
+    @Column({name: 'lopId'})
+    classId: number
     @Column({ name: "ten" })
     ten: string
 
@@ -26,18 +27,21 @@ export class Schedule {
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'kieuId' })
-    typeId: TypeSchedule
+    typeId: number
 
     @Column({ name: "date" })
-    ngay: Date
+    day: number
 
-    @Column({name: 'trangThai', default: true})
+    @Column({ name: 'trangThai', default: true })
     active: boolean
 
     @ManyToOne(() => Room, (room) => room.schedules, {
         cascade: true,
         onDelete: 'CASCADE',
     })
-    @JoinColumn({name: 'roomId'})
-    room: Room
+    @JoinColumn({ name: 'roomId' })
+    room?: Room
+    @Column({ name: 'roomId' })
+    roomId?: number
+    caId?: number
 }

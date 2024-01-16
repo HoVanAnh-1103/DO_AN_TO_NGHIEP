@@ -12,11 +12,15 @@ export class SubjectService {
     private subjectRepository: Repository<Subject>,
   ) { }
   create(createSubjectDto: CreateSubjectDto) {
-    return 'This action adds a new subject';
+    return this.subjectRepository.save(createSubjectDto);
   }
 
   findAll() {
-    return this.subjectRepository.find({ where: { active: true } });
+    return this.subjectRepository.find({
+      where: { active: true }, relations: {
+        category: true
+      }
+    });
   }
 
   findOne(id: number) {
@@ -28,6 +32,6 @@ export class SubjectService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} subject`;
+    return this.subjectRepository.update({ id }, { active: false });
   }
 }

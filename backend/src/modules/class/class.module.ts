@@ -3,10 +3,11 @@ import { ClassService } from './class.service';
 import { ClassController } from './class.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Class } from './entities/class.entity';
+import { ScheduleModule } from '../schedule/schedule.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Class])],
+  imports: [TypeOrmModule.forFeature([Class]), ScheduleModule],
   controllers: [ClassController],
   providers: [ClassService],
 })
-export class ClassModule {}
+export class ClassModule { }

@@ -16,6 +16,9 @@ export class Class {
     @JoinColumn({ name: 'giaoVienId' })
     teacher: User
 
+    @Column({ name: 'giaoVienId' })
+    teacherId?: number
+
     @Column({ name: "siSo" })
     size: Number
 
@@ -32,7 +35,7 @@ export class Class {
     active: Boolean
 
     @ManyToMany(() => Subject, subject => subject.classes, { cascade: true, onDelete: "CASCADE" })
-    @JoinColumn({name: 'monHocId'})
+    @JoinColumn({ name: 'monHocId' })
     @JoinTable({ name: "lop_subjects_monhoc" })
     subject: Subject[]
 

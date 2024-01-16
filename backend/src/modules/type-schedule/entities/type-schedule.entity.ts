@@ -7,12 +7,12 @@ export class TypeSchedule {
     id: number;
 
     @Column({ name: "ten" })
-    name: string
+    name?: string
 
     @OneToMany(() => Schedule, (schedule) => schedule.typeId)
 
     schedules?: Schedule[];
 
     @Column({ name: "trangThai", default: true })
-    active: Boolean
+    active?: Boolean
 }

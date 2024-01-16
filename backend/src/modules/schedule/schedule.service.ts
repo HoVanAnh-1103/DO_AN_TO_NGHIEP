@@ -11,7 +11,7 @@ export class ScheduleService {
     @InjectRepository(Schedule)
     private scheduleRepository: Repository<Schedule>,) { }
   create(createScheduleDto: CreateScheduleDto) {
-    return this.scheduleRepository.create(createScheduleDto);
+    return this.scheduleRepository.save(createScheduleDto);
   }
 
   findAll() {

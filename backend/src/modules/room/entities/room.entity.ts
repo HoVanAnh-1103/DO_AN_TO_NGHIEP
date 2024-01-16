@@ -7,18 +7,20 @@ export class Room {
     id: number;
 
     @Column({ name: "ten", nullable: true })
-    name: string
+    name?: string
 
     @Column({ name: 'moTa', nullable: true })
-    description: string
+    description?: string
 
     @Column({ name: 'diaChi', nullable: true })
 
-    address: string
+    address?: string
 
     @Column({ name: "trangThai", default: true })
-    active: Boolean
+    active?: Boolean
 
     @OneToMany(() => Schedule, (schedule) => schedule.room)
-    schedules: Schedule[]
+    schedules?: Schedule[]
+    @Column({ name: 'soChoNgoi', default: 30, nullable: true })
+    size?: number
 }
