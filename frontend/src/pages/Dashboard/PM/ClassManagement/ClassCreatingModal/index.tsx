@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, Modal, Radio, Row, Select, Space, Tag } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Radio, Row, Select, Space, Tag } from 'antd';
 import { styled, alpha } from '@mui/material/styles';
 
 import Paper from '@mui/material/Paper';
@@ -18,7 +18,7 @@ import { blue, orange } from '@mui/material/colors';
 import teacherService from '@services/teacher.service';
 import roomService from '@services/room.service';
 import subjectService from '@services/subject.service';
-import { daysInWeek } from '@utils/constants';
+import { cas, daysInWeek } from '@utils/constants';
 
 interface Values {
     title: string;
@@ -26,14 +26,7 @@ interface Values {
     modifier: string;
 }
 
-const cas = [
-    { start: '07:00', end: '08:55', id: 1 },
-    { start: '09:00', end: '10:55', id: 2 },
-    { start: '13:00', end: '14:55', id: 3 },
-    { start: '15:00', end: '16:55', id: 4 },
-    { start: '17:00', end: '19:55', id: 5 },
-    { start: '19:00', end: '20:55', id: 6 },
-]
+
 const currentDate = '2018-11-01';
 const data = getDaysOfWeekForDate(new Date(currentDate), 0).map((date) => {
     const strDate = formatDate(date);
@@ -43,14 +36,7 @@ let appointments: any[] = []
 data.forEach((d) => {
     appointments = [...appointments, ...d]
 })
-
-
-
-// [
-//     { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
-//     { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
-// ];
-
+const { RangePicker } = DatePicker;
 
 const PREFIX = 'Demo';
 
@@ -159,7 +145,26 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
         })
     }, [])
 
+    useEffect(() => { }, [schedule])
 
+
+    const onSelected = (data: any) => {
+        if (data.data.title === 'Đã chọn') {
+            console.clear()
+
+            setSchedule(schedule.filter((sche: any) => {
+                return !(data.data.caId == sche.caId && data.data.day == sche.day && sche.roomId == roomSelected)
+            }))
+
+            return
+        }
+        setSchedule([...schedule, { day: data.data.day, caId: data.data.caId, roomId: roomSelected }])
+        data.data.instances = [
+            { text: 'Low Priority', id: 1, color: blue },
+
+        ]
+        return data
+    }
     return (
         <Modal
             open={open}
@@ -168,7 +173,6 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
             cancelText="Hủy"
             onCancel={onCancel}
             width={1200}
-            // style={{minHeight: 900px}}
             onOk={() => {
                 form
                     .validateFields()
@@ -176,7 +180,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                         console.log(values);
 
                         // form.resetFields();
-                        onCreate(values);
+                        onCreate({...values, schedules: schedule});
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);
@@ -187,34 +191,24 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                 form={form}
                 layout="vertical"
                 name="form_in_modal"
-                onFinish={(data) => {
-                    console.log(data);
-
-                }}
-                onSubmitCapture={(data) => {
-                    console.log(data);
-
-                }}
             // initialValues={{ modifier: 'public' }}
             >
                 <Row gutter={24}>
                     <Col span={8}> <Form.Item
-                        name="title"
+                        name="name"
                         label="Tên"
                         rules={[{ required: true, message: 'Please input the title of collection!' }]}
                     >
                         <Input />
                     </Form.Item>
-                        <Form.Item name="size" label="Sĩ số">
+                        <Form.Item name="size" initialValue={0} label="Sĩ số">
                             <Input type="number" />
                         </Form.Item>
-                        <Form.Item name="teacher" className="collection-create-form_last-form-item" label='Giáo viên'>
+                        <Form.Item name="teacherId" className="collection-create-form_last-form-item" label='Giáo viên'>
                             <Select
                                 showSearch
                                 placeholder="Giáo viên"
                                 optionFilterProp="children"
-                                // onChange={onChange}
-                                // onSearch={onSearch}
                                 filterOption={filterOption}
                                 options={teachers}
                             />
@@ -225,8 +219,6 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                                 showSearch
                                 placeholder="Môn học"
                                 optionFilterProp="children"
-                                // onChange={onChange}
-                                // onSearch={onSearch}
                                 filterOption={filterOption}
                                 options={subjects}
                             />
@@ -240,11 +232,14 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                                     setRoomSelected(data)
 
                                 }}
-                                // onSearch={onSearch}
                                 filterOption={filterOption}
                                 options={rooms}
 
                             />
+                        </Form.Item>
+                        <Form.Item label={'Bắt đầu/ Kết thúc'} name='dateRange'>
+                            <RangePicker />
+
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -252,14 +247,15 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                         <div>
                             <Space direction='vertical'>
                                 {
-                                    schedule.map((schedule: any) => {
-                                        return <Tag closable>{`${daysInWeek[schedule.day]} ${cas[schedule.caId].start}-${cas[schedule.caId].end} Phòng ${rooms.find((room: any) => room.value == schedule.roomId)?.label}`}</Tag>
+                                    schedule.map((s: any, index: number) => {
+                                        return <Tag closable hidden={false} key={`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`} onClose={() => {
+                                            setSchedule(schedule.filter((sche: any) => {
+                                                return !(s.caId == sche.caId && s.day == sche.day && s.roomId == sche.roomId)
+                                            }))
+                                        }} >{`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`}</Tag>
                                     })
                                 }
-                                {/* <Tag closable>Chủ nhật 7:00-8:55 Phòng A1</Tag>
-                                <Tag closable>Chủ nhật 7:00-8:55 Phòng A2</Tag>
-                                <Tag closable>Chủ nhật 7:00-8:55 Phòng A2</Tag>
-                                <Tag closable>Chủ nhật 7:00-8:55 Phòng A2</Tag> */}
+
                             </Space>
                         </div>
                     </Col>
@@ -308,28 +304,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                     }} />
                     <AppointmentTooltip
 
-                        onAppointmentMetaChange={(data: any) => {
-                            if (data.data.title === 'Đã chọn') {
-                                console.clear()
-                                // console.log((schedule.filter((sche: any) => {
-                                //     return !(data.data.caId == sche.caId && data.data.day == sche.day)
-                                // })));
-                                setSchedule(schedule.filter((sche: any) => {
-                                    console.log(data.data.caId, sche.caId, data.data.day, sche.day, data.data.caId == sche.caId, data.data.day == sche.day);
-
-                                    return !(data.data.caId == sche.caId && data.data.day == sche.day && sche.roomId == roomSelected)
-                                }))
-
-                                return
-                            }
-                            setSchedule([...schedule, { day: data.data.day, caId: data.data.caId, roomId: roomSelected }])
-                            data.data.instances = [
-                                { text: 'Low Priority', id: 1, color: blue },
-
-                            ]
-                            //    data.target['style'].background = '#5BB318'
-                            return data
-                        }} visible={false} />
+                        onAppointmentMetaChange={onSelected} visible={false} />
 
 
                 </Scheduler>
