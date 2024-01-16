@@ -6,6 +6,7 @@ import {
     BellOutlined,
     CloudOutlined,
     HighlightOutlined,
+    LogoutOutlined,
     ScheduleOutlined,
     SettingFilled,
     SettingOutlined,
@@ -20,7 +21,7 @@ import type { MenuProps } from 'antd';
 import { Avatar, Breadcrumb, Dropdown, Layout, Menu, theme } from 'antd';
 import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
 import logo from '@access/logo.svg'
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 const menuTeacher: ItemType<MenuItemType>[] = [
     {
@@ -57,7 +58,12 @@ const menuPM: ItemType<MenuItemType>[] = [
         label: "Quản lí chung",
         icon: <UnorderedListOutlined />,
         children: [
-            { label: <Link to={'class-management'}>Quản lí lớp học</Link>, key: 'quan-li-lop-hoc' }
+            { label: <Link to={'class-management'}>Quản lí lớp học</Link>, key: 'quan-li-lop-hoc' },
+            { label: <Link to={'subject-management'}>Quản lí môn học</Link>, key: 'quan-li-mon-hoc' },
+            { label: <Link to={'class-management'}>Quản lí phòng</Link>, key: 'quan-li-phong' },
+            { label: <Link to={'class-management'}>Quản lí thời gian</Link>, key: 'quan-li-thoi-gian' },
+            { label: <Link to={'class-management'}>Quản lí người dùng</Link>, key: 'quan-li-nguoi-dung' }
+
         ]
     },
     {
@@ -84,47 +90,46 @@ const menuPM: ItemType<MenuItemType>[] = [
 ]
 
 
-const items: MenuProps['items'] = [
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    AppstoreOutlined,
-    TeamOutlined,
-    ShopOutlined,
-].map((icon, index) => ({
-    key: String(index + 1),
-    icon: React.createElement(icon),
-    label: `nav ${index + 1}`,
-}));
+
 
 const App: React.FC = () => {
+    const navigate = useNavigate() 
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+
+    const items: MenuProps['items'] = [{
+        key: 1,
+        label: 'Đăng xuất',
+        icon: <LogoutOutlined />
+        ,
+        onClick: () => {
+            localStorage.removeItem('access_token')
+            navigate('/login')
+        }
+    }
+    ]
     return (
         <Layout hasSider>
             <Sider
                 style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
             >
-                <div className="demo-logo-vertical">
+                <div className="demo-logo-vertical" style={{background: '#fff'}}>
                     <img src={logo} alt="" style={{ width: '100%' }} />
                 </div>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['thong-bao']} items={menuPM} style={{ fontSize: "16px", fontWeight: 500 }} />
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['quan-li-lop-hoc']} items={menuPM} style={{ fontSize: "16px", fontWeight: 500 }} />
             </Sider>
             <Layout style={{ marginLeft: 200 }}>
                 <Header style={{
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
                     padding: 0,
                     background: colorBgContainer,
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
                     position: "fixed",
                     boxShadow: "#e9e9e9 2px 2px 10px",
                     width: '-webkit-fill-available',
-                    justifyItems: "flex-end",
                     zIndex: 2
                 }} >
                     <Dropdown menu={{ items }}>
@@ -141,27 +146,7 @@ const App: React.FC = () => {
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                     <Breadcrumb.Item>App</Breadcrumb.Item>
                 </Breadcrumb>
-                {/* <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                    <div
-                        style={{
-                            padding: 24,
-                            textAlign: 'center',
-                            background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
-                        }}
-                    >
-                        <p>long content</p>
-                        {
-                            // indicates very long content
-                            Array.from({ length: 100 }, (_, index) => (
-                                <React.Fragment key={index}>
-                                    {index % 20 === 0 && index ? 'more' : '...'}
-                                    <br />
-                                </React.Fragment>
-                            ))
-                        }
-                    </div>
-                </Content> */}
+
                 <Outlet />
                 <Footer style={{ textAlign: 'center' }}>
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED

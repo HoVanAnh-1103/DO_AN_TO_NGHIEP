@@ -1,7 +1,7 @@
 import instance from "./instance";
 
-const prefix = '/subject'
-const subjectService = {
+const prefix = '/category'
+const categoryService = {
     get: async () => {
         const res = await instance.get(prefix);
         return res.data;
@@ -15,4 +15,4 @@ const subjectService = {
     }
 }
 
-export default subjectService;
+export default categoryService;

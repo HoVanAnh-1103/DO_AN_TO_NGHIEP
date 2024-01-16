@@ -27,15 +27,16 @@ root.render(
             colorPrimary: '#5BB318'
           },
           Layout: {
-            siderBg: '#5BB318'
+            siderBg: '#fff'
           },
           Menu: {
-            darkItemBg: '#5BB318',
-            darkItemSelectedBg: 'white',
+            darkItemBg: '#fff',
+            darkItemSelectedBg: '#CDE0C4',
             darkItemSelectedColor: "#7F7C7C",
-            darkItemColor: '#FFFFFF',
+            darkItemColor: '#7F7C7C',
             iconSize: 16,
-            darkSubMenuItemBg: '#CDE0C4'
+            darkSubMenuItemBg: '#a3cf90',
+            darkItemHoverColor: '#535353' 
           }
         },
 

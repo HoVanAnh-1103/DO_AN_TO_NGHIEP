@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Button, Input, Modal, Space, Table, Tag, theme } from 'antd';
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import classService from "@services/class.service";
-import ClassCreatingModal from "./ClassCreatingModal";
 import { daysInWeek } from "@utils/constants";
 import { formatDate } from "@utils/index";
+import ClassCreatingModal from "../ClassManagement/ClassCreatingModal";
+import subjectService from "@services/subject.service";
+import SubjectCreatingModal from "./SubjectCreatingModal";
 
 const { Column, ColumnGroup } = Table;
 const { confirm } = Modal;
@@ -13,18 +15,19 @@ const { confirm } = Modal;
 interface DataType {
     id: number;
     name: string;
-    size: number;
     subject: any[];
-    start: Date;
-    teacher: any
-    end: Date;
+    description: string;
+    class: number;
+    category: {
+        name: string
+    }
 }
 
 const data: DataType[] = [
 
 ];
 
-function ClassManagement() {
+function SubjectManagement() {
     const [cls, setCls] = useState<DataType[]>([])
     const [textSearch, setTextSearch] = useState('')
     const {
@@ -34,12 +37,12 @@ function ClassManagement() {
     const [open, setOpen] = useState(false);
 
     const fresh = async () => {
-        const data = await classService.get()
+        const data = await subjectService.get()
         console.log(data);
         setCls(data)
     }
-    const deleteClass = async (classId: number) => {
-        await classService.delete(classId)
+    const deleteSubject = async (classId: number) => {
+        await subjectService.delete(classId)
         fresh()
     }
 
@@ -53,8 +56,8 @@ function ClassManagement() {
             ),
             okText: "Xác nhận",
             cancelText: "Hủy",
-            onOk: ()=>{
-                deleteClass(id)
+            onOk: () => {
+                deleteSubject(id)
             }
         });
 
@@ -78,7 +81,7 @@ function ClassManagement() {
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
                 </Space.Compact>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => {
+                <Button icon={<PlusOutlined />} onClick={() => {
                     setOpen(true);
                 }}>
                     Tạo môn học
@@ -87,43 +90,15 @@ function ClassManagement() {
 
             <Table dataSource={cls}>
 
-                <Column title="ID" dataIndex="id" key="id" />
-                <Column title="Tên lớp" dataIndex="name" key="name" />
-                <Column title="Bắt đầu" dataIndex="start" render={(data) => { return formatDate(new Date(data)) }} key="start" />
-                <Column title="Kết thúc" dataIndex="end" render={(data) => { return formatDate(new Date(data)) }} key="end" />
+                <Column title="Mã môn học" dataIndex="id" key="id" />
+                <Column title="Tên môn học" dataIndex="name" key="name" />
+                <Column title="Danh mục" dataIndex="category" key="category"
+                render={(value)=>{
+                    return value.name
+                }} />
 
-                <Column title="Sĩ số" dataIndex="size" key="size" />
-                <Column title="Thời khóa biểu" dataIndex="schedules" key="size"
-                    render={(schedules: any[]) => (
-                        <div>
-                            {schedules.map((schedule) => (<div>{`${daysInWeek[schedule.day]} ${schedule.start}-${schedule.end} Phòng ${schedule.room.name}`}</div>))}
-                        </div>
-                    )} />
-                <Column
-                    title="Môn"
-                    dataIndex="subject"
-                    key="subject"
-                    render={(tags: any[]) => (
-                        <>
-                            {tags.map((tag) => (
-                                <Tag color="blue" key={tag.name}>
-                                    {tag.name}
-                                </Tag>
-                            ))}
-                        </>
-                    )}
-                />
-                <Column
-                    title="Giáo viên"
-                    dataIndex="teacher"
-                    key="teacher"
-                    render={(teacher: any) => (
-
-                        <>
-                            {teacher?.fullName}
-                        </>
-                    )}
-                />
+                <Column title="Ghi chú" dataIndex="description" key="description" />
+                <Column title="Lớp" dataIndex="class" key="class" />
                 <Column
                     title="Action"
                     key="action"
@@ -139,8 +114,13 @@ function ClassManagement() {
                     )}
                 />
             </Table>
-            <ClassCreatingModal open={open} onCancel={() => { setOpen(false) }} onCreate={async (data) => {
-                const res = await classService.post(data)
+            {/* <ClassCreatingModal open={open} onCancel={() => { setOpen(false) }} onCreate={async (data) => {
+                const res = await subjectService.post(data)
+                setOpen(false)
+                fresh()
+            }} /> */}
+            <SubjectCreatingModal open={open} onCancel={() => { setOpen(false) }} onCreate={async (data) => {
+                const res = await subjectService.post(data)
                 setOpen(false)
                 fresh()
             }} />
@@ -148,4 +128,4 @@ function ClassManagement() {
     </Content>);
 }
 
-export default ClassManagement;
+export default SubjectManagement;

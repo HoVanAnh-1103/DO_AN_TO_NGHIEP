@@ -179,8 +179,9 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                     .then((values) => {
                         console.log(values);
 
-                        // form.resetFields();
                         onCreate({...values, schedules: schedule});
+                        form.resetFields();
+                        setSchedule([])
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);
