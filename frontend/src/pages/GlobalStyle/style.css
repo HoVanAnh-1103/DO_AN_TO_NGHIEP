@@ -6,3 +6,7 @@ body{
 :where(.css-dev-only-do-not-override-18xcoax).ant-menu-dark .ant-menu-submenu-selected >.ant-menu-submenu-title, :where(.css-dev-only-do-not-override-18xcoax).ant-menu-dark>.ant-menu .ant-menu-submenu-selected >.ant-menu-submenu-title {
     color: #ffffff;
 }
+
+aside .ant-layout-sider .ant-layout-sider-dark{
+    min-width: 300px;
+}

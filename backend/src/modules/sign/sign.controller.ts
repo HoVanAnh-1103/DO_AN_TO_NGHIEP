@@ -44,6 +44,7 @@ export class SignController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSignDto: UpdateSignDto) {
+    console.log(id,updateSignDto);
     return this.signService.update(+id, updateSignDto);
   }
 

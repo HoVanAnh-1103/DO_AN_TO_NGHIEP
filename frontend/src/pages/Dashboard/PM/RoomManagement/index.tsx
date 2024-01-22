@@ -76,7 +76,7 @@ function RoomManagement() {
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
                 </Space.Compact>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => {
+                <Button icon={<PlusOutlined />} onClick={() => {
                     setOpen(true);
                 }}>
                     Thêm phòng học

@@ -73,15 +73,15 @@ function ClassManagement() {
                 minHeight: '100vh',
             }}
         >
-            <h3>Quản lý môn học</h3>
+            <h3>Quản lý lớp học</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px' }}>
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
                 </Space.Compact>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => {
+                <Button icon={<PlusOutlined />} onClick={() => {
                     setOpen(true);
                 }}>
-                    Tạo môn học
+                    Tạo lớp học
                 </Button>
             </div>
 

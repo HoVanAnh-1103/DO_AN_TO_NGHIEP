@@ -52,7 +52,7 @@ function SignManagement() {
     }
 
     const cofrim = async (classId: string, teacherId: string, status: string) => {
-        await signUpClassService.post({ classId, teacherId, status: SignUpStatus.APPROVED })
+        await signUpClassService.update({ classId, teacherId, status: status })
         fresh()
         setOpen(false)
     }
@@ -71,16 +71,12 @@ function SignManagement() {
                 minHeight: '100vh',
             }}
         >
-            <h3>Quản lý môn học</h3>
+            <h3>Quản lý đăng ký</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px' }}>
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
                 </Space.Compact>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => {
-                    setOpen(true);
-                }}>
-                    Tạo môn học
-                </Button>
+        
             </div>
 
             <Table dataSource={cls}>
@@ -153,6 +149,8 @@ function SignManagement() {
                         let button;
                         if (data == SignUpStatus.APPROVED) button = 'Đã xác nhận'
                         if (data == SignUpStatus.PENDDING) button = <Button onClick={() => {
+                            console.log({classId: record.classId, teacherId: record.teacherId});
+                            
                             setSignSelected({classId: record.classId, teacherId: record.teacherId})
 
                             setOpen(true)

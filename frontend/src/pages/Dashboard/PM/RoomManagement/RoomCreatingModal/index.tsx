@@ -85,7 +85,7 @@ const RoomCreatingModal: React.FC<CollectionCreateFormProps> = ({
     return (
         <Modal
             open={open}
-            title="Thêm môn học"
+            title="Thêm phòng"
             okText="Thêm"
             cancelText="Hủy"
             // cancelButtonProps={}

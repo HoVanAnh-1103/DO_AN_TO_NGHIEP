@@ -5,6 +5,7 @@ import { Sign } from './entities/sign.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, In, IsNull, Not, Repository } from 'typeorm';
 import { Class } from '../class/entities/class.entity';
+import { SignUpClassStatus } from '../auth/guards/role.enum';
 
 @Injectable()
 export class SignService {
@@ -12,14 +13,18 @@ export class SignService {
     @InjectRepository(Sign)
     private signRepository: Repository<Sign>,
     @InjectRepository(Class)
-    private classRepository: Repository<Class>) { }
-
-
+    private classRepository: Repository<Class>,
+  ) {}
 
   async create(createSignDto: CreateSignDto) {
+    const s = await this.signRepository.create({
+      ...createSignDto,
+      signedAt: new Date(),
+      active: true,
+      status: SignUpClassStatus.PENDDING,
 
-    const s = await this.signRepository.create({ ...createSignDto, signedAt: new Date(), active: true, });
-    return this.signRepository.save(s)
+    });
+    return this.signRepository.save(s);
   }
 
   findAll(userId) {
@@ -28,41 +33,43 @@ export class SignService {
       relations: {
         subject: true,
         teacher: true,
-        schedules: { room: true }
+        schedules: { room: true },
       },
       select: {
         teacher: { fullName: true },
-      }
-    })
+      },
+    });
   }
 
   async findAllClassNotAsignet(userId: number) {
     const daDAngKys = await this.classRepository.find({
       where: {
-        active: true, teacherId: IsNull(), signs: {
-          teacherId: userId
-        }
+        active: true,
+        teacherId: IsNull(),
+        signs: {
+          teacherId: userId,
+        },
       },
       relations: {
         subject: true,
         schedules: { room: true },
-        signs: true
-      }
-    })
+        signs: true,
+      },
+    });
 
     const chuaDangKy = await await this.classRepository.find({
       where: {
-        active: true, teacherId: IsNull(), id: Not(In(daDAngKys.map(d => d.id)))
+        active: true,
+        teacherId: IsNull(),
+        id: Not(In(daDAngKys.map((d) => d.id))),
       },
       relations: {
         subject: true,
         schedules: { room: true },
-      }
-    })
-    return [...daDAngKys, ...chuaDangKy]
-
+      },
+    });
+    return [...daDAngKys, ...chuaDangKy];
   }
-
 
   async getAllSignUpForPM() {
     const dangKys = await this.signRepository.find({
@@ -73,23 +80,23 @@ export class SignService {
 
       relations: {
         class: { schedules: { room: true }, subject: true },
-        teacher: { user: true }
-      }
-    })
-    return dangKys
+        teacher: { user: true },
+      },
+    });
+    return dangKys;
   }
-
-
-
-
-
 
   findOne(id: number) {
     return `This action returns a #${id} sign`;
   }
 
-  update(id: number, updateSignDto: UpdateSignDto) {
-    return this.signRepository.save(updateSignDto);
+  async update(id: number, UpdateSignDto: UpdateSignDto) {
+    console.log(UpdateSignDto);
+
+    const { teacherId, classId, ...data } = UpdateSignDto;
+    if (data.status == SignUpClassStatus.APPROVED)
+      await this.classRepository.update({ id: +classId }, {  teacherId });
+    return this.signRepository.update({ teacherId, classId }, data);
   }
 
   remove(userId: number, classId: number) {

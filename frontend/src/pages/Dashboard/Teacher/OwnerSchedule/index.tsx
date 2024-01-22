@@ -85,7 +85,7 @@ function OwnerSChedule() {
                 minHeight: '100vh',
             }}
         >
-            <h3>Quản lý môn học</h3>
+            <h3>Lịch dạy cá nhân</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px' }}>
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />

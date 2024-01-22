@@ -17,11 +17,12 @@ import {
     UploadOutlined,
     UserOutlined,
     VideoCameraOutlined,
+    BookOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Breadcrumb, Dropdown, Layout, Menu, theme } from 'antd';
 import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
-import logo from '@access/logo.svg'
+import logo from '@access/snapedit_1705690457169.png'
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@redux/userSlice';
@@ -64,7 +65,7 @@ const menuTeacher: ItemType<MenuItemType>[] =
         },
         {
             key: 'quang-ly-ca-nhan',
-            label: 'Quảng lý cá nhân',
+            label: 'Quản lý cá nhân',
             icon: <UserOutlined />
         },
         { key: 'cai-dat', label: 'Cài đặt', icon: <SettingFilled /> }
@@ -72,15 +73,14 @@ const menuTeacher: ItemType<MenuItemType>[] =
 const menuPM: ItemType<MenuItemType>[] = [
     {
         key: "quan-li-chung",
-        label: "Quản lí chung",
+        label: "Quản lý chung",
         icon: <UnorderedListOutlined />,
         children: [
-            { label: <Link to={'class-management'}>Quản lí lớp học</Link>, key: 'quan-li-lop-hoc' },
-            { label: <Link to={'subject-management'}>Quản lí môn học</Link>, key: 'quan-li-mon-hoc' },
-            { label: <Link to={'room-management'}>Quản lí phòng</Link>, key: 'quan-li-phong' },
-            { label: <Link to={'class-management'}>Quản lí thời gian</Link>, key: 'quan-li-thoi-gian' },
-            { label: <Link to={'class-management'}>Quản lí người dùng</Link>, key: 'quan-li-nguoi-dung' },
-            { label: <Link to={'sign-management'}>Duyệt Đăng ký</Link>, key: 'duyet-dang-ky' }
+            { label: <Link to={'class-management'}>Quản lý lớp học</Link>, key: 'quan-li-lop-hoc' },
+            { label: <Link to={'subject-management'}>Quản lý môn học</Link>, key: 'quan-li-mon-hoc' },
+            { label: <Link to={'room-management'}>Quản lý phòng</Link>, key: 'quan-li-phong' },
+            { label: <Link to={'class-management'}>Quản lý thời gian</Link>, key: 'quan-li-thoi-gian' },
+            { label: <Link to={'class-management'}>Quản lý người dùng</Link>, key: 'quan-li-nguoi-dung' },
         ]
     },
     {
@@ -101,6 +101,11 @@ const menuPM: ItemType<MenuItemType>[] = [
         ]
     },
     {
+        key: 'giao-vien',
+        label: 'Giáo viên',
+        icon: <BookOutlined />
+    },
+    {
         key: 'hoc-vien',
         label: 'Học viên',
         icon: <TeamOutlined />
@@ -111,8 +116,8 @@ const menuPM: ItemType<MenuItemType>[] = [
         label: "Thông báo",
     },
     {
-        key: 'quang-ly-ca-nhan',
-        label: 'Quảng lý cá nhân',
+        key: 'quan-ly-ca-nhan',
+        label: 'Quản lý cá nhân',
         icon: <UserOutlined />
     },
     { key: 'cai-dat', label: 'Cài đặt', icon: <SettingFilled /> }
@@ -148,10 +153,10 @@ const App: React.FC = () => {
             <Sider
                 style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
             >
-                <div className="demo-logo-vertical" style={{ background: '#fff' }}>
-                    <img src={logo} alt="" style={{ width: '100%' }} />
+                <div className="demo-logo-vertical" style={{ background: '#fff', display: 'flex', justifyItems: 'center', justifyContent: 'space-around' }}>
+                    <img src={logo} alt="" style={{ width: '80%' }} />
                 </div>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['quan-li-lop-hoc']} items={user?.user?.roles[0] == UserRoleEnum.PM ? menuPM : menuTeacher} style={{ fontSize: "16px", fontWeight: 500 }} />
+                <Menu  theme="dark" mode="inline" defaultSelectedKeys={['quan-li-lop-hoc']} items={user?.user?.roles[0] == UserRoleEnum.PM ? menuPM : menuTeacher} style={{ fontSize: "16px", fontWeight: 500 }} />
             </Sider>
             <Layout style={{ marginLeft: 200 }}>
                 <Header style={{

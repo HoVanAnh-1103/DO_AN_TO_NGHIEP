@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import style from "./style.module.scss";
 import classNames from 'classnames';
-import logo from '../../access/logo.svg'
+import logo from '../../access/snapedit_1705690457169.png'
 import colors from '@access/colors'
 import { Button, Checkbox, Form, Input } from 'antd';
 import { authService, login } from '@services/auth.service';
