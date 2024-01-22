@@ -1,8 +1,7 @@
 import instance from "./instance";
 
-const prefix = '/class'
-const classService = {
-
+const prefix = '/sign'
+const signUpClassService = {
     get: async () => {
         const res = await instance.get(prefix);
         return res.data;
@@ -14,10 +13,15 @@ const classService = {
     delete: async (id: number) => {
         return instance.delete(prefix + '/' + id)
     },
-    getOne: async (classId: any) => {
-        const res = await instance.get(prefix + '/' + classId);
+    findAllClassNotAsignet: async () => {
+        const res = await instance.get(prefix + `/all-class-not-asignet`);
         return res.data;
     },
+
+    findAllSingUpForPM: async ()=>{
+        const res = await instance.get(prefix + `/all-class-for-pm`);
+        return res.data;
+    }
 }
 
-export default classService;
+export default signUpClassService;

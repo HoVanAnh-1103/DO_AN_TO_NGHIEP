@@ -32,6 +32,8 @@ import { Subject } from './modules/subject/entities/subject.entity';
 import { Category } from './modules/category/entities/category.entity';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { Teacher } from './modules/teacher/entities/teacher.entity';
+import { SignModule } from './modules/sign/sign.module';
+import { Sign } from './modules/sign/entities/sign.entity';
 
 
 
@@ -47,8 +49,8 @@ import { Teacher } from './modules/teacher/entities/teacher.entity';
       username: 'root',
       password: '12345',
       database: 'localhostdb',
-      entities: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category, Teacher],
-      migrations: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category],
+      entities: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category, Teacher,Sign],
+      migrations: [User, Role, Class, Schedule, TypeSchedule, Room, Subject, Category, Sign],
 
       // synchronize: true,
       autoLoadEntities: true,
@@ -70,7 +72,8 @@ import { Teacher } from './modules/teacher/entities/teacher.entity';
     CategoryModule,
     RequestTypeModule,
     AuthModule,
-    TeacherModule]
+    TeacherModule,
+    SignModule]
   ,
   controllers: [AppController],
   providers: [AppService],

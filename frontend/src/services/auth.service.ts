@@ -22,6 +22,7 @@ const authService = {
             .catch((error) => error);
         return data;
     },
+    
 };
 
 export { login, authService };

@@ -12,7 +12,7 @@ export class RoomService {
     private roomPrository: Repository<Room>
   ) { }
   create(createRoomDto: CreateRoomDto) {
-    return this.roomPrository.create(createRoomDto)
+    return this.roomPrository.save(createRoomDto)
   }
 
   findAll() {

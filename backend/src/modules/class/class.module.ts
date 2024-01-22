@@ -9,5 +9,7 @@ import { ScheduleModule } from '../schedule/schedule.module';
   imports: [TypeOrmModule.forFeature([Class]), ScheduleModule],
   controllers: [ClassController],
   providers: [ClassService],
+  exports: [TypeOrmModule.forFeature([Class])]
+  // exports:[ClassModule]
 })
 export class ClassModule { }

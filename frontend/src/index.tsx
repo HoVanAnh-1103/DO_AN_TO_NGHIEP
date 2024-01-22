@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import colors from '@access/colors';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -36,13 +38,15 @@ root.render(
             darkItemColor: '#7F7C7C',
             iconSize: 16,
             darkSubMenuItemBg: '#a3cf90',
-            darkItemHoverColor: '#535353' 
+            darkItemHoverColor: '#535353'
           }
         },
 
       }}
     >
-      <App />
+      <Provider store={store}>  <App /></Provider>
+
+
     </ConfigProvider>
   </React.StrictMode>
 );

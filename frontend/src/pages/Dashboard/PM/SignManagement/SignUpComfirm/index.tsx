@@ -18,7 +18,8 @@ import { blue, orange } from '@mui/material/colors';
 import teacherService from '@services/teacher.service';
 import roomService from '@services/room.service';
 import subjectService from '@services/subject.service';
-import { cas, daysInWeek } from '@utils/constants';
+import { SignUpStatus, cas, daysInWeek } from '@utils/constants';
+import classService from '@services/class.service';
 
 interface Values {
     title: string;
@@ -103,13 +104,15 @@ interface CollectionCreateFormProps {
     open: boolean;
     onCreate: (values: Values) => void;
     onCancel: () => void;
+    initData: any
 }
 const filterOption = (input: string, option?: { label: string; value: string }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
+const SignUpComfirm: React.FC<CollectionCreateFormProps> = ({
     open,
     onCreate,
     onCancel,
+    initData
 }) => {
     const [form] = Form.useForm();
     const [schedule, setSchedule] = useState<any>([]);
@@ -117,6 +120,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
     const [teachers, setTeachers] = useState<any>([])
     const [roomSelected, setRoomSelected] = useState()
     const [subjects, setSubjects] = useState([])
+    const [initDataForm, setInitDataForm] = useState<{ classId?: number }>({})
     useEffect(() => {
         teacherService.get().then(data => {
             setTeachers(data.map((teacher: any) => {
@@ -147,6 +151,23 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
 
     useEffect(() => { }, [schedule])
 
+    useEffect(() => {
+        console.log(initData);
+
+        if (!initData.classId) return;
+        classService.getOne(initData.classId).then((data: any) => {
+            // setInitDataForm(data)
+            form.setFields([{ name: 'name', value: data.name }, { name: 'subjectId', value: data.subject?.[0].id },
+            { name: 'size', value: data.size }, { name: 'teacherId', value: initData.teacherId },
+                // { name: 'dateRange', value: [new Date(data.start), new Date(data.end)] }
+
+            ])
+
+            setSchedule(data.schedules.map((data: any) => ({ roomId: data.roomId, start: data.start, end: data.end, day: data.day })))
+        })
+    }, [initData])
+
+
 
     const onSelected = (data: any) => {
         if (data.data.title === 'Đã chọn') {
@@ -168,11 +189,12 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
     return (
         <Modal
             open={open}
-            title="Thêm lớp học"
-            okText="Thêm"
+            title="Xác nhận đăng ký"
+            okText="Xác nhận"
             cancelText="Hủy"
             onCancel={onCancel}
             width={1200}
+
             onOk={() => {
                 form
                     .validateFields()
@@ -192,12 +214,13 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                 form={form}
                 layout="vertical"
                 name="form_in_modal"
-            // initialValues={{ modifier: 'public' }}
+                initialValues={initDataForm}
             >
                 <Row gutter={24}>
                     <Col span={8}> <Form.Item
                         name="name"
                         label="Tên"
+
                         rules={[{ required: true, message: 'Please input the title of collection!' }]}
                     >
                         <Input />
@@ -224,23 +247,19 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                                 options={subjects}
                             />
                         </Form.Item>
-                        <Form.Item initialValue={roomSelected} name="roomId" className="collection-create-form_last-form-item" label='Phòng'>
-                            <Select
-                                showSearch
-                                placeholder="Phòng"
-                                optionFilterProp="children"
-                                onChange={(data) => {
-                                    setRoomSelected(data)
 
-                                }}
-                                filterOption={filterOption}
-                                options={rooms}
-
-                            />
-                        </Form.Item>
                         <Form.Item label={'Bắt đầu/ Kết thúc'} name='dateRange'>
                             <RangePicker />
 
+                        </Form.Item>
+                        <Form.Item name="status" className="collection-create-form_last-form-item" label='Xác nhận'>
+                            <Select
+                                showSearch
+                                placeholder="Môn học"
+                                optionFilterProp="children"
+                                filterOption={filterOption}
+                                options={[{ label: 'Xác nhận', value: SignUpStatus.APPROVED }, { label: 'Hủy', value: SignUpStatus.REJECT }]}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -249,11 +268,8 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                             <Space direction='vertical'>
                                 {
                                     schedule.map((s: any, index: number) => {
-                                        return <Tag closable hidden={false} key={`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`} onClose={() => {
-                                            setSchedule(schedule.filter((sche: any) => {
-                                                return !(s.caId == sche.caId && s.day == sche.day && s.roomId == sche.roomId)
-                                            }))
-                                        }} >{`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`}</Tag>
+                                        return <Tag closable hidden={false} key={`${daysInWeek[s.day]} ${s.start}-${s.end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`}  >
+                                            {`${daysInWeek[s.day]} ${s.start}-${s.end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`}</Tag>
                                     })
                                 }
 
@@ -265,59 +281,9 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
 
 
             </Form>
-            <Paper>
-                <Scheduler
-                    height={500}
-                    data={appointments}
-                >
-                    <ViewState
-                        currentDate={currentDate}
-                    />
-                    <WeekView
-                        startDayHour={7}
-                        endDayHour={19}
-                        timeTableCellComponent={TimeTableCell}
-                        dayScaleCellComponent={DayScaleCell}
-                    />
-                    <Appointments appointmentComponent={({ children, style, data, ...restProps }: any) => {
-                        let selected = false
-                        if (schedule.find((sche: any) => {
-                            return sche.caId == data.caId && sche.day == data.day && roomSelected == sche.roomId
-                        })) selected = true
-                        if (selected) {
-                            data.title = 'Đã chọn'
-                        } else {
-                            data.title = 'Có thể chọn'
-                        }
-                        return (
 
-                            <Appointments.Appointment
-                                key={data.day + data.start + data.end}
-                                onHover={() => {
-                                    console.log('hover');
-
-                                }}
-                                {...restProps}
-                                data={data}
-                                style={{
-                                    ...style,
-                                    backgroundColor: selected ? '#5BB318' : data.backgroundColor,
-                                }}
-                            >
-                                <div>{children}</div>
-                            </Appointments.Appointment>
-                        )
-                    }} />
-
-                    <AppointmentTooltip
-
-                        onAppointmentMetaChange={onSelected} visible={false} />
-
-
-                </Scheduler>
-            </Paper>
         </Modal>
     );
 };
 
-export default ClassCreatingModal;
+export default SignUpComfirm;

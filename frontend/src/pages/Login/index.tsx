@@ -4,8 +4,10 @@ import classNames from 'classnames';
 import logo from '../../access/logo.svg'
 import colors from '@access/colors'
 import { Button, Checkbox, Form, Input } from 'antd';
-import { login } from '@services/auth.service';
+import { authService, login } from '@services/auth.service';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, setUser } from '@redux/userSlice';
 
 
 
@@ -24,19 +26,21 @@ type FieldType = {
 function Login() {
   const [form] = Form.useForm<any>()
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
 
 
   const onFinish = useCallback(async (values: any) => {
-    const data = await login(values.username, values.password);
-    
+    const data = await login(values.username, values.password);    
     if (data.access_token) {
       console.log(data);
       localStorage.setItem("access_token", data.access_token);
       console.log(localStorage.getItem('access_token'));
-      
+
       // dispath(getProfileAsync());
       navigate("/");
+      const user  = await authService.getMe()
+      dispatch(setUser(user))
     } else {
       //thong bao loi
     }

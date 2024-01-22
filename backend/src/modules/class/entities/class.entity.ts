@@ -1,4 +1,5 @@
 import { Schedule } from "src/modules/schedule/entities/schedule.entity";
+import { Sign } from "src/modules/sign/entities/sign.entity";
 import { Subject } from "src/modules/subject/entities/subject.entity";
 import { User } from "src/modules/user/entities/user.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -42,4 +43,6 @@ export class Class {
     @ManyToMany(() => User, (user) => user.classes)
     students: User[];
 
+    @OneToMany(() => Sign, (sign) => sign.class)
+    signs?: Sign[]
 }

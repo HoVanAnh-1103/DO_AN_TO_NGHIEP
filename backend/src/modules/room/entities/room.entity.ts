@@ -1,6 +1,11 @@
 import { Schedule } from "src/modules/schedule/entities/schedule.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+export enum RoomTypeEnum {
+    NORMAL = "NORMAL",
+    'AIR_CON' = "NORMAL",
+}
+
 @Entity({ name: "phong" })
 export class Room {
     @PrimaryGeneratedColumn()
@@ -21,6 +26,9 @@ export class Room {
 
     @OneToMany(() => Schedule, (schedule) => schedule.room)
     schedules?: Schedule[]
+    
     @Column({ name: 'soChoNgoi', default: 30, nullable: true })
     size?: number
+    @Column({ name: 'loai', type: "enum", enum: RoomTypeEnum, default: RoomTypeEnum.NORMAL })
+    type?: string
 }

@@ -73,7 +73,8 @@ export class ClassService {
 
   findOne(id: number) {
     return this.classRepository.findOne({
-      where: { id, active: true }, relations: {
+      where: { active: true , id},
+      relations: {
         subject: true,
         teacher: true,
         schedules: { room: true }

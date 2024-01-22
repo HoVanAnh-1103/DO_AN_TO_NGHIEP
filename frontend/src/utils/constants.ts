@@ -15,5 +15,20 @@ const cas = [
     { start: '17:00', end: '19:55', id: 5 },
     { start: '19:00', end: '20:55', id: 6 },
 ]
+enum RoomTypeEnum {
+    NORMAL = "NORMAL",
+    'AIR_CON' = "NORMAL",
+}
 
-export { daysInWeek, cas }
+enum UserRoleEnum {
+    TECHER = 'GIAO_VIEN',
+    PM = 'QUAN_LY'
+}
+enum SignUpStatus {
+    APPROVED = "XAC_NHAN",
+    REJECT = 'HUY',
+    PENDDING = 'DANG_DOI'
+}
+
+
+export { daysInWeek, cas, RoomTypeEnum, UserRoleEnum, SignUpStatus }
