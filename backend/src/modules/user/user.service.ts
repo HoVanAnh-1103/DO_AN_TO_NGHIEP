@@ -39,7 +39,6 @@ export class UserService {
     private userRepository: Repository<User>,
   ) { }
   async create(createUserDto: CreateUserDto) {
-    this.logger.log(createUserDto)
     const hashPassword = await bcrypt.hash(createUserDto.password, 10);
 
     const role = new Role();
@@ -81,6 +80,40 @@ export class UserService {
     return res;
   }
 
+
+  async createStudent(createUserDto: CreateUserDto) {
+    const hashPassword = await bcrypt.hash('12345', 10);
+
+    const role = new Role();
+    role.id = 3;
+    createUserDto.roles = [role];
+    createUserDto.password = hashPassword;
+
+    const res = this.userRepository
+      .save(createUserDto)
+      .catch((error: InsertError) => {
+        if (error.code === 'ER_DUP_ENTRY') {
+          const duplicateValue = extractString(error.sqlMessage);
+          const duplicateKey = findKeyByValue(createUserDto, duplicateValue);
+          throw new HttpException(
+            {
+              message: `${duplicateValue} đã được sử dụng`,
+              field: duplicateKey,
+            },
+            HttpStatus.BAD_REQUEST,
+          );
+        } else {
+          throw new HttpException(
+            {
+              message: 'Đã có lỗi xảy ra',
+            },
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
+      });
+   
+    return res;
+  }
   findAll() {
     return `This action returns all user`;
   }
@@ -96,7 +129,7 @@ export class UserService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.update({id}, {active: false});
   }
   async findOneByEmail(email: string) {
     const account = await this.userRepository.find({
@@ -112,5 +145,15 @@ export class UserService {
       },
     });
     if (account.length > 0) return account[0];
+  }
+
+
+  async findAllStudent() {
+    return this.userRepository.find({
+      where: {
+        active: true,
+        roles: { id: 3 }
+      }
+    })
   }
 }
