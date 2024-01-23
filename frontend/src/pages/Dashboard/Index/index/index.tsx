@@ -101,13 +101,13 @@ const menuPM: ItemType<MenuItemType>[] = [
         ]
     },
     {
-        key: 'giao-vien',
-        label: 'Giáo viên',
+        key: 'quan-ly-giao-vien',
+        label:  <Link to={'quan-ly-giao-vien'}>Giáo viên</Link>,
         icon: <BookOutlined />
     },
     {
         key: 'hoc-vien',
-        label: 'Học viên',
+        label:   <Link to={'quan-ly-hoc-sinh'}>Học viên</Link>,
         icon: <TeamOutlined />
     },
     {

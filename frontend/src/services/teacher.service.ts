@@ -6,6 +6,10 @@ const teacherService = {
         const res = await instance.get(prefix);
         return res.data;
     },
+    post: async (data: any) => {
+        const res = await instance.post(prefix, data)
+        return res
+    },
 }
 
 export default teacherService;

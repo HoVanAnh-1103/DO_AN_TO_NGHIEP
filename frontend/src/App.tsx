@@ -12,6 +12,9 @@ import { authService } from '@services/auth.service';
 import OwnerSChedule from './pages/Dashboard/Teacher/OwnerSchedule';
 import SignUpSchedule from './pages/Dashboard/Teacher/SignUpSchedule';
 import SignManagement from './pages/Dashboard/PM/SignManagement';
+import Home from './pages/User/Home';
+import StudentManagement from './pages/Dashboard/PM/StudentManagement';
+import TeacherManagement from './pages/Dashboard/PM/TeacherManagement';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,7 +26,10 @@ const router = createBrowserRouter([
       { path: 'room-management', element: <RoomManagement /> },
       { path: 'sign-management', element: <SignManagement /> },
       { path: 'lich-day-ca-nhan', element: <OwnerSChedule /> },
-      { path: 'dang-ky-lich-day', element: <SignUpSchedule /> }
+      { path: 'dang-ky-lich-day', element: <SignUpSchedule /> },
+      { path: 'quan-ly-giao-vien', element: <TeacherManagement /> },
+      { path: 'quan-ly-hoc-sinh', element: <StudentManagement /> }
+
     ]
   },
   {
@@ -31,6 +37,10 @@ const router = createBrowserRouter([
     element: <Login />,
 
   },
+  {
+    path: '/home',
+    element: <Home />
+  }
 
 ]);
 function App() {
