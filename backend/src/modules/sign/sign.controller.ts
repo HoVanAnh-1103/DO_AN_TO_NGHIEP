@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+} from '@nestjs/common';
 import { SignService } from './sign.service';
 import { CreateSignDto } from './dto/create-sign.dto';
 import { UpdateSignDto } from './dto/update-sign.dto';
@@ -6,14 +15,14 @@ import { Request as RE } from 'express';
 
 @Controller('sign')
 export class SignController {
-  constructor(private readonly signService: SignService) { }
+  constructor(private readonly signService: SignService) {}
 
   @Post()
   create(@Body() createSignDto: CreateSignDto, @Request() req) {
     console.log(req['user']);
     console.log('CHECK');
 
-    createSignDto.teacherId = req['user'].sub
+    createSignDto.teacherId = req['user'].sub;
     return this.signService.create(createSignDto);
   }
 
@@ -37,6 +46,11 @@ export class SignController {
     return this.signService.getAllSignUpForPM();
   }
 
+  @Get('findAllClassForStudent')
+  findAllClassForStudent(@Request() req: RE) {
+    return this.signService.findAllClassForStudent(req['user'].sub);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.signService.findOne(+id);
@@ -44,7 +58,7 @@ export class SignController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSignDto: UpdateSignDto) {
-    console.log(id,updateSignDto);
+    console.log(id, updateSignDto);
     return this.signService.update(+id, updateSignDto);
   }
 
@@ -52,5 +66,4 @@ export class SignController {
   remove(@Param('id') id: string, @Request() req: RE) {
     return this.signService.remove(req['user'].sub, +id);
   }
-
 }

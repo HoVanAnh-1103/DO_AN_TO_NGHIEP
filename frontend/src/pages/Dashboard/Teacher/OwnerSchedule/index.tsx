@@ -133,7 +133,7 @@ function OwnerSChedule() {
                 <Column title="Số học sinh" dataIndex="size" key="size" />
                 <Column title="Chi tiết" dataIndex="id" key="id" render={(data)=> <Link to={`/detail/${data}`}>Chi tiết</Link>}  />
 
-                <Column
+                {/* <Column
                     title="Action"
                     key="action"
                     render={(_: any, record: DataType) => (
@@ -146,7 +146,7 @@ function OwnerSChedule() {
                             </Button>
                         </Space>
                     )}
-                />
+                /> */}
             </Table>
         </div>
     </Content>);

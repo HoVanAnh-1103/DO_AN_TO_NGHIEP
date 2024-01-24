@@ -1,29 +1,37 @@
-import { Class } from "src/modules/class/entities/class.entity";
-import { Role } from "src/modules/role/entities/role.entity";
-import { Teacher } from "src/modules/teacher/entities/teacher.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Class } from 'src/modules/class/entities/class.entity';
+import { Role } from 'src/modules/role/entities/role.entity';
+import { StudentOfClass } from 'src/modules/student-of-class/entities/student-of-class.entity';
+import { Teacher } from 'src/modules/teacher/entities/teacher.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "hoten" })
+  @Column({ name: 'hoten' })
   fullName: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ name: "matKhau" })
+  @Column({ name: 'matKhau' })
   password: string;
 
-  @Column({ unique: true, name: "soDienThoai" })
+  @Column({ unique: true, name: 'soDienThoai' })
   phone: string;
 
-  @Column({ default: 0, name: "xacThuc" })
+  @Column({ default: 0, name: 'xacThuc' })
   verify: boolean;
 
-  @Column({ default: 0, name: "hoatDong" })
+  @Column({ default: 0, name: 'hoatDong' })
   activity: boolean;
 
   @ManyToMany(() => Role, (role) => role.name, {
@@ -38,21 +46,21 @@ export class User {
   // @JoinTable()
   // classes: Class[];
   @OneToMany(() => Teacher, (teacher) => teacher.user)
-  teacherInfo: Teacher
+  teacherInfo: Teacher;
 
-  @Column({ name: "diaChi", nullable: true, })
-  address: string
+  @Column({ name: 'diaChi', nullable: true })
+  address: string;
 
-  @Column({name: 'trangThai', default: true})
-  active: boolean
-  
+  @Column({ name: 'trangThai', default: true })
+  active: boolean;
 
   @ManyToMany(() => Class, (cls) => cls.students, {
     cascade: true,
   })
   classes: Class[];
 
-
+  @OneToMany(() => StudentOfClass, (s) => s.user)
+  studentOfClass: StudentOfClass;
   // @ManyToMany(() => Course, (course) => course.lecturers)
   // coursesTaught: Course[];
 

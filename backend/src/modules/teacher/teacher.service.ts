@@ -10,15 +10,15 @@ export class TeacherService {
   constructor(
     @InjectRepository(Teacher)
     private techerRepository: Repository<Teacher>,
-  ) { }
+  ) {}
   create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
+    return this.techerRepository.save(createTeacherDto);
   }
 
   findAll() {
     return this.techerRepository.find({
       relations: {
-        user: true
+        user: true,
       },
     });
   }
@@ -32,6 +32,6 @@ export class TeacherService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} teacher`;
+    return this.techerRepository.update({ userId: id }, { active: false });
   }
 }

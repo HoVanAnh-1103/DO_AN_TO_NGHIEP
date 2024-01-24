@@ -49,7 +49,7 @@ function StudentManagement() {
             title: 'Xác nhận',
             content: (
                 <>
-                    Bạn chắc chắn muốn lưu trữ học viên có Id <Tag>{`${id}`}</Tag>, tên <Tag>{name}</Tag>
+                    Bạn chắc chắn muốn Xóa học viên có Id <Tag>{`${id}`}</Tag>, tên <Tag>{name}</Tag>
                 </>
             ),
             okText: "Xác nhận",
@@ -74,7 +74,7 @@ function StudentManagement() {
                 minHeight: '100vh',
             }}
         >
-            <h3>Quản lý lớp học</h3>
+            <h3>Danh sách học viên</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px' }}>
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
@@ -135,7 +135,7 @@ function StudentManagement() {
                                 Sửa
                             </Button>
                             <Button type="primary" danger onClick={() => { onClickDelete(record.id, record.fullName)}} >
-                                Lưu trữ
+                                Xóa
                             </Button>
                         </Space>
                     )}

@@ -21,7 +21,7 @@ interface DataType {
     start: Date;
     teacher: any
     end: Date;
-    signs: any[]
+    studentOfClasses: any[]
 }
 
 const data: DataType[] = [
@@ -33,14 +33,14 @@ const optionsWithDisabled = [
 ];
 
 const signUpClass = async (id: number) => {
-    return signUpClassService.post({ classId: id })
+    return studentOfClassService.post({ classId: id })
 }
 const cancleClass = async (id: number) => {
-    return signUpClassService.delete(id)
+    return studentOfClassService.delete(id)
 
 }
 
-function SignUpSchedule() {
+function ScheduleSignUpClass() {
     const [cls, setCls] = useState<DataType[]>([])
     const [textSearch, setTextSearch] = useState('')
     const {
@@ -51,7 +51,7 @@ function SignUpSchedule() {
     const [value4, setValue4] = useState('all');
 
     const fresh = async () => {
-        const data = await signUpClassService.findAllClassNotAsignet()
+        const data = await signUpClassService.findAllClassForStudent()
         setCls(data)
     }
 
@@ -96,6 +96,8 @@ function SignUpSchedule() {
                 <Column title="Kết thúc" dataIndex="end" render={(data) => { return formatDate(new Date(data)) }} key="end" />
 
                 <Column title="Số chỗ" dataIndex="size" key="size" />
+                <Column title="Giáo viên" dataIndex="teacher" key="teacher"  render={(data:any)=>{return data.fullName}}/>
+
                 <Column title="Thời khóa biểu" dataIndex="schedules" key="size"
                     render={(schedules: any[]) => (
                         <div>
@@ -126,7 +128,7 @@ function SignUpSchedule() {
                     key="action"
                     render={(_: any, record: DataType) => (
                         <Space size="middle">
-                            {record?.signs?.length ? <Button type="primary" onClick={async () => {
+                            {record?.studentOfClasses?.length ? <Button type="primary" onClick={async () => {
                                 await confirm({
                                     title: 'Xác nhận Đăng ký dạy lớp',
                                     content: (
@@ -171,4 +173,4 @@ function SignUpSchedule() {
     </Content>);
 }
 
-export default SignUpSchedule;
+export default ScheduleSignUpClass;

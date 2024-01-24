@@ -9,6 +9,7 @@ import ClassCreatingModal from "../ClassManagement/ClassCreatingModal";
 import studentService from "@services/student.service";
 import StudentCreatingModal from "../StudentManagement/StudentCreatingModal";
 import TeacherCreatingModal from "./TeacherCreatingModal";
+import teacherService from "@services/teacher.service";
 
 const { Column, ColumnGroup } = Table;
 const { confirm } = Modal;
@@ -20,6 +21,7 @@ interface DataType {
     phone: string;
     address: Date;
     active: boolean;
+    userId: number;
 }
 
 const data: DataType[] = [
@@ -36,12 +38,12 @@ function TeacherManagement() {
     const [open, setOpen] = useState(false);
 
     const fresh = async () => {
-        const data = await studentService.get()
-
+        let data = await teacherService.get()
+        data = data.map((t:any) => ({...t, ...t.user}))
         setCls(data)
     }
     const deleteClass = async (classId: number) => {
-        await studentService.delete(classId)
+        await teacherService.delete(classId)
         fresh()
     }
 
@@ -50,7 +52,7 @@ function TeacherManagement() {
             title: 'Xác nhận',
             content: (
                 <>
-                    Bạn chắc chắn muốn lưu trữ học viên có Id <Tag>{`${id}`}</Tag>, tên <Tag>{name}</Tag>
+                    Bạn chắc chắn muốn xóa giáo viên có Id <Tag>{`${id}`}</Tag>, tên <Tag>{name}</Tag>
                 </>
             ),
             okText: "Xác nhận",
@@ -139,15 +141,15 @@ function TeacherManagement() {
                             <Button type="primary">
                                 Sửa
                             </Button>
-                            <Button type="primary" danger onClick={() => { onClickDelete(record.id, record.fullName) }} >
-                                Lưu trữ
+                            <Button type="primary" danger onClick={() => { onClickDelete(record.userId, record.fullName) }} >
+                                Xóa
                             </Button>
                         </Space>
                     )}
                 />
             </Table>
             <TeacherCreatingModal open={open} onCancel={() => { setOpen(false) }} onCreate={async (data) => {
-                return studentService.post(data).then((data) => {
+                return teacherService.post(data).then((data) => {
                     setOpen(false)
                     fresh()
                 })

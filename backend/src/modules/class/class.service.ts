@@ -25,7 +25,7 @@ export class ClassService {
       name: createClassDto.name,
       subject: [{ id: createClassDto.subjectId }],
       start: createClassDto.dateRange[0],
-      end: createClassDto.dateRange[0],
+      end: createClassDto.dateRange[1],
       active: true,
       size: +createClassDto.size,
       teacherId: createClassDto.teacherId

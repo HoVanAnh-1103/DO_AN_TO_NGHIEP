@@ -71,6 +71,40 @@ export class SignService {
     return [...daDAngKys, ...chuaDangKy];
   }
 
+  async findAllClassForStudent(userId: number) {
+    
+    const daDAngKys = await this.classRepository.find({
+      where: {
+        active: true,
+        teacherId: Not(IsNull()),
+        studentOfClasses: {
+          userId: userId,
+          active: Not(true)
+        },
+      },
+      relations: {
+        subject: true,
+        schedules: { room: true },
+        studentOfClasses: true,
+        teacher: true
+      },
+    });
+
+    const chuaDangKy = await await this.classRepository.find({
+      where: {
+        active: true,
+        teacherId: Not(IsNull()),
+        id: Not(In(daDAngKys.map((d) => d.id))),
+      },
+      relations: {
+        subject: true,
+        schedules: { room: true },
+        teacher: true
+      },
+    });
+    return [...daDAngKys, ...chuaDangKy];
+  }
+
   async getAllSignUpForPM() {
     const dangKys = await this.signRepository.find({
       where: {
@@ -85,6 +119,7 @@ export class SignService {
     });
     return dangKys;
   }
+
 
   findOne(id: number) {
     return `This action returns a #${id} sign`;

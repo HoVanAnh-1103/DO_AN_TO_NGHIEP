@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ConfigProvider } from 'antd';
-import colors from '@access/colors';
-import { Provider } from 'react-redux';
-import store from './redux/store';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ConfigProvider } from "antd";
+import colors from "@access/colors";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
@@ -17,36 +17,36 @@ root.render(
         components: {
           Input: {
             ...colors.primary,
-            hoverBorderColor: '#5BB318'
+            hoverBorderColor: "#5BB318",
           },
           Button: {
-            defaultBg: '#5BB318',
+            defaultBg: "#5BB318",
             defaultColor: "#fff",
             // size: 50
           },
           Checkbox: {
-            size: 123,
-            colorPrimary: '#5BB318'
+            // size: 123,
+            colorPrimary: "#5BB318",
           },
           Layout: {
-            siderBg: '#fff'
+            siderBg: "#fff",
           },
           Menu: {
-            darkItemBg: '#fff',
-            darkItemSelectedBg: '#CDE0C4',
+            darkItemBg: "#fff",
+            darkItemSelectedBg: "#CDE0C4",
             darkItemSelectedColor: "#7F7C7C",
-            darkItemColor: '#7F7C7C',
-            iconSize: 16,
-            darkSubMenuItemBg: '#a3cf90',
-            darkItemHoverColor: '#535353'
-          }
-        },
+            darkItemColor: "#7F7C7C",
 
+            darkSubMenuItemBg: "#fff",
+            darkItemHoverColor: "#535353",
+          },
+        },
       }}
     >
-      <Provider store={store}>  <App /></Provider>
-
-
+      <Provider store={store}>
+        {" "}
+        <App />
+      </Provider>
     </ConfigProvider>
   </React.StrictMode>
 );

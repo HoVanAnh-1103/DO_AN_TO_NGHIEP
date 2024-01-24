@@ -26,6 +26,10 @@ const signUpClassService = {
     const res = await instance.patch(prefix+'/0', data);
     return res;
   },
+  findAllClassForStudent: async ()=>{
+    const res = await instance.get(prefix + `/findAllClassForStudent`);
+    return res.data;
+  }
 };
 
 export default signUpClassService;

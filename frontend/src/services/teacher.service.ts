@@ -10,6 +10,9 @@ const teacherService = {
         const res = await instance.post(prefix, data)
         return res
     },
+    delete: async (id: number) => {
+        return instance.delete(prefix + '/' + id)
+    }
 }
 
 export default teacherService;
