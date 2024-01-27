@@ -35,6 +35,8 @@ import { Teacher } from './modules/teacher/entities/teacher.entity';
 import { SignModule } from './modules/sign/sign.module';
 import { Sign } from './modules/sign/entities/sign.entity';
 import { StudentOfClass } from './modules/student-of-class/entities/student-of-class.entity';
+import { Receiver } from './modules/receiver/entities/receiver.entity';
+import { Notification } from './modules/notification/entities/notification.entity';
 
 @Module({
   imports: [
@@ -59,7 +61,7 @@ import { StudentOfClass } from './modules/student-of-class/entities/student-of-c
         Category,
         Teacher,
         Sign,
-        StudentOfClass,
+        StudentOfClass, Notification, Receiver
       ],
       migrations: [
         User,
@@ -71,7 +73,7 @@ import { StudentOfClass } from './modules/student-of-class/entities/student-of-c
         Subject,
         Category,
         Sign,
-        StudentOfClass,
+        StudentOfClass, Notification, Receiver
       ],
 
       // synchronize: true,
@@ -100,5 +102,5 @@ import { StudentOfClass } from './modules/student-of-class/entities/student-of-c
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {}
+  constructor(private dataSource: DataSource) { }
 }

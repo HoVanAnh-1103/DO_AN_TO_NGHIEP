@@ -4,6 +4,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from './entities/teacher.entity';
 import { Repository } from 'typeorm';
+import { Subject } from '../subject/entities/subject.entity';
 
 @Injectable()
 export class TeacherService {
@@ -12,6 +13,16 @@ export class TeacherService {
     private techerRepository: Repository<Teacher>,
   ) {}
   create(createTeacherDto: CreateTeacherDto) {
+    const {subjects} = createTeacherDto
+    const subject = []
+    subjects.forEach(element => {
+      const sub =  new Subject()
+      sub.id = element
+      subject.push(sub)
+    }); 
+    createTeacherDto.subject = subject
+
+
     return this.techerRepository.save(createTeacherDto);
   }
 
@@ -19,6 +30,7 @@ export class TeacherService {
     return this.techerRepository.find({
       relations: {
         user: true,
+        subject: true
       },
     });
   }
@@ -28,7 +40,17 @@ export class TeacherService {
   }
 
   update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
+    const {subjects} = updateTeacherDto
+    const subject = []
+    subjects.forEach(element => {
+      const sub =  new Subject()
+      sub.id = element
+      subject.push(sub)
+    }); 
+    updateTeacherDto.subject = subject
+
+    updateTeacherDto.userId = updateTeacherDto.id
+    return this.techerRepository.save(updateTeacherDto);
   }
 
   remove(id: number) {

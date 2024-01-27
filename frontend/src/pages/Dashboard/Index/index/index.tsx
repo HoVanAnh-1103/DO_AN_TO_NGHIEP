@@ -62,11 +62,11 @@ const menuTeacher: ItemType<MenuItemType>[] = [
   {
     key: "thong-bao",
     icon: <BellFilled />,
-    label: "Thông báo",
+    label: <Link to="thong-bao-giao-vien">Thông báo</Link>,
   },
   {
-    key: "quang-ly-ca-nhan",
-    label: "Thông tin cá nhân",
+    key: "thong-tin-ca-nhan",
+    label: <Link to='thong-tin-ca-nhan'> Thông tin cá nhân</Link>,
     icon: <UserOutlined />,
   },
   { key: "cai-dat", label: "Cài đặt", icon: <SettingFilled /> },
@@ -90,7 +90,7 @@ const menuPM: ItemType<MenuItemType>[] = [
         label: <Link to={"room-management"}>Cập nhật phòng</Link>,
         key: "quan-li-phong",
       },
-    
+
       /*{
         label: <Link to={"class-management"}>Phân quyền</Link>,
         key: "quan-li-nguoi-dung",
@@ -148,7 +148,7 @@ const menuStudent: ItemType<MenuItemType>[] = [
   {
     key: "thoi-khoa-bieu",
     label: <Link to={"/hoc-sinh/lich-hoc"}>Thời kháo biểu</Link>,
-    icon:<CalendarOutlined />,
+    icon: <CalendarOutlined />,
   },
   {
     key: "hoc-sinh/dang-ky-lich-hoc",
@@ -175,7 +175,7 @@ const App: React.FC = () => {
       },
     },
   ];
-  console.log(user);
+  console.log(user, user?.user?.roles[0].name);
   return (
     <Layout hasSider>
       <Sider
@@ -204,13 +204,13 @@ const App: React.FC = () => {
           mode="inline"
           defaultSelectedKeys={["quan-li-lop-hoc"]}
           items={
-            user?.user?.roles[0] == UserRoleEnum.PM
+            user?.user?.roles[0].name == UserRoleEnum.PM
               ? menuPM
-              : user?.user?.roles[0] === UserRoleEnum.STUDENT
-              ? menuStudent
-              : menuTeacher
+              : user?.user?.roles[0].name === UserRoleEnum.STUDENT
+                ? menuStudent
+                : menuTeacher
           }
-          // style={{ fontSize: "16px", fontWeight: 500 }}
+        // style={{ fontSize: "16px", fontWeight: 500 }}
         />
       </Sider>
       <Layout style={{ marginLeft: 200 }}>
@@ -229,7 +229,7 @@ const App: React.FC = () => {
         >
           <>
             <span style={{ marginRight: "20px" }}>
-              {user?.user?.username || ""}
+              {user?.user?.fullName || ""}
             </span>
           </>{" "}
           {user && (

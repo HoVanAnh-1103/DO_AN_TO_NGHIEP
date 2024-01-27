@@ -110,7 +110,7 @@ export class UserService {
           );
         }
       });
-   
+
     return res;
   }
   findAll() {
@@ -128,13 +128,16 @@ export class UserService {
   }
 
   remove(id: number) {
-    return this.userRepository.update({id}, {active: false});
+    return this.userRepository.update({ id }, { active: false });
   }
   async findOneByEmail(email: string) {
     const account = await this.userRepository.find({
       where: { email: email },
       relations: {
         roles: true,
+        teacherInfo: {
+          subject: true
+        }
         // avatar: true,
       },
       select: {

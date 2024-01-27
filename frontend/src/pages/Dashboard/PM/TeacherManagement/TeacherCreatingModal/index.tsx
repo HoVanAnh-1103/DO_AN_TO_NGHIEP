@@ -36,58 +36,7 @@ let appointments: any[] = []
 data.forEach((d) => {
     appointments = [...appointments, ...d]
 })
-const { RangePicker } = DatePicker;
 
-const PREFIX = 'Demo';
-
-const classes = {
-    todayCell: `${PREFIX}-todayCell`,
-    weekendCell: `${PREFIX}-weekendCell`,
-    today: `${PREFIX}-today`,
-    weekend: `${PREFIX}-weekend`,
-};
-
-const StyledWeekViewTimeTableCell = styled(WeekView.TimeTableCell)(({ theme }) => ({
-    [`&.${classes.todayCell}`]: {
-        backgroundColor: alpha(theme.palette.primary.main, 0.1),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.14),
-        },
-        '&:focus': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.16),
-        },
-    },
-    [`&.${classes.weekendCell}`]: {
-        backgroundColor: alpha(theme.palette.action.disabledBackground, 0.04),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.04),
-        },
-        '&:focus': {
-            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.04),
-        },
-    },
-}));
-
-const StyledWeekViewDayScaleCell = styled(WeekView.DayScaleCell)(({ theme }) => ({
-    [`&.${classes.today}`]: {
-        backgroundColor: alpha(theme.palette.primary.main, 0.16),
-    },
-    [`&.${classes.weekend}`]: {
-        backgroundColor: alpha(theme.palette.action.disabledBackground, 0.06),
-    },
-}));
-
-
-
-const DayScaleCell = (props: any) => {
-    const { startDate, today } = props;
-
-    if (today) {
-        return <StyledWeekViewDayScaleCell {...props} className={classes.today} />;
-    } if (startDate.getDay() === 0 || startDate.getDay() === 6) {
-        return <StyledWeekViewDayScaleCell {...props} className={classes.weekend} />;
-    } return <StyledWeekViewDayScaleCell {...props} />;
-};
 
 
 interface CollectionCreateFormProps {
@@ -198,8 +147,26 @@ const TeacherCreatingModal: React.FC<CollectionCreateFormProps> = ({
                         <Form.Item name="degree" className="collection-create-form_last-form-item" label='Bằng cấp'>
                             <Input type="text" placeholder='Bằng cấp' />
                         </Form.Item>
-                        <Form.Item name="subject" className="collection-create-form_last-form-item" label='Bộ môn'>
-                            <Input type="text" placeholder='Bộ môn' />
+                        <Form.Item name="subjects" className="collection-create-form_last-form-item" label='Bộ môn'>
+                            {/* <Input type="text" placeholder='Bộ môn' /> */}
+
+                            <Select
+                                mode="multiple"
+                                style={{ width: '100%' }}
+                                placeholder="select one country"
+                                // defaultValue={}
+                                // onChange={handleChange}
+                                optionLabelProp="label"
+                                options={subjects}
+                            // optionRender={(option) => (
+                            //     <Space>
+                            //         <span role="img" aria-label={option.data.label}>
+                            //             {option.data.emoji}
+                            //         </span>
+                            //         {option.data.desc}
+                            //     </Space>
+                            // )}
+                            />
                         </Form.Item>
 
                     </Col>

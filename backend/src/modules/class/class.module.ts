@@ -4,9 +4,12 @@ import { ClassController } from './class.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Class } from './entities/class.entity';
 import { ScheduleModule } from '../schedule/schedule.module';
+import { Notification } from '../notification/entities/notification.entity';
+import { NotificationModule } from '../notification/notification.module';
+import { ReceiverModule } from '../receiver/receiver.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Class]), ScheduleModule],
+  imports: [TypeOrmModule.forFeature([Class]), ScheduleModule, NotificationModule,ReceiverModule],
   controllers: [ClassController],
   providers: [ClassService],
   exports: [TypeOrmModule.forFeature([Class])]

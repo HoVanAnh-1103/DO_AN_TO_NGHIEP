@@ -12,6 +12,9 @@ const teacherService = {
     },
     delete: async (id: number) => {
         return instance.delete(prefix + '/' + id)
+    },
+    patch: async (data: any) => {
+        return instance.patch(prefix + '/' + data.id, data)
     }
 }
 

@@ -122,7 +122,8 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
             setTeachers(data.map((teacher: any) => {
                 return {
                     value: teacher.userId,
-                    label: teacher.user.fullName
+                    label: teacher.user.fullName,
+                    data: teacher.subject
                 }
             }))
         })
@@ -212,6 +213,16 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                                 optionFilterProp="children"
                                 filterOption={filterOption}
                                 options={teachers}
+                                onChange={(data:any)=>{
+                                    const teacher = teachers.find((t: any)=>t.value === data)
+                                    console.log(teacher);
+                                    setSubjects(teacher?.data.map((subject: any) => {
+                                        return {
+                                            value: subject.id,
+                                            label: subject.name
+                                        }
+                                    }))                                    
+                                }}
                             />
                         </Form.Item></Col>
                     <Col span={8}>
@@ -265,7 +276,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
 
 
             </Form>
-            <Paper>
+            {/* <Paper>
                 <Scheduler
                     height={500}
                     data={appointments}
@@ -315,7 +326,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
 
 
                 </Scheduler>
-            </Paper>
+            </Paper> */}
         </Modal>
     );
 };

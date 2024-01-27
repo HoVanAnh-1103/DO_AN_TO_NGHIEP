@@ -1,5 +1,6 @@
 import { Category } from "src/modules/category/entities/category.entity";
 import { Class } from "src/modules/class/entities/class.entity";
+import { Teacher } from "src/modules/teacher/entities/teacher.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "monHoc" })
@@ -26,5 +27,12 @@ export class Subject {
     classes?: Class[]
 
     @Column({name: 'lop'})
-    class?: number
+    class?: number  
+
+    // @OneToMany(() => Teacher, t => t.subject)
+    // techers?: Teacher[]
+    
+    @ManyToMany(() => Teacher, (question) => question.subject)
+    @JoinColumn({name: 'monhocId'})
+    techers: Teacher[]
 }

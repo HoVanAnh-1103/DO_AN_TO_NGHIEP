@@ -1,10 +1,13 @@
 import { Class } from 'src/modules/class/entities/class.entity';
+import { Notification } from 'src/modules/notification/entities/notification.entity';
+import { Receiver } from 'src/modules/receiver/entities/receiver.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { StudentOfClass } from 'src/modules/student-of-class/entities/student-of-class.entity';
 import { Teacher } from 'src/modules/teacher/entities/teacher.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -40,6 +43,9 @@ export class User {
   @JoinTable()
   roles: Role[];
 
+  @Column({ name: 'DOB' })
+  DOB: Date
+
   isAdmin?: boolean;
 
   // @OneToMany(() => Class, (classs) => classs.teacher)
@@ -61,6 +67,18 @@ export class User {
 
   @OneToMany(() => StudentOfClass, (s) => s.user)
   studentOfClass: StudentOfClass;
+
+
+
+  @OneToMany(() => Notification, (notification) => notification.user)
+  @JoinColumn({ name: 'nguoiGui' })
+  notifications: Notification[]
+
+
+  @OneToMany(() => Receiver, (re) => re.user)
+  @JoinColumn({ name: 'nguoiDungId' })
+  receivers: Receiver[]
+
   // @ManyToMany(() => Course, (course) => course.lecturers)
   // coursesTaught: Course[];
 

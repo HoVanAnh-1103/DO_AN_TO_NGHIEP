@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReceiverDto } from './dto/create-receiver.dto';
 import { UpdateReceiverDto } from './dto/update-receiver.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Receiver } from './entities/receiver.entity';
 
 @Injectable()
 export class ReceiverService {
+  constructor(
+    @InjectRepository(Receiver)
+    private receiverRepository: Repository<Receiver>
+  ) { }
   create(createReceiverDto: CreateReceiverDto) {
-    return 'This action adds a new receiver';
+    return this.receiverRepository.save(createReceiverDto);
   }
 
   findAll() {

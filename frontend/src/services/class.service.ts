@@ -18,6 +18,10 @@ const classService = {
         const res = await instance.get(prefix + '/' + classId);
         return res.data;
     },
+    approvedClassByTeacher: async (data: any)=>{
+        const res = await instance.post(prefix+'/approvedClassByTeacher', data)
+        return res
+    }
 }
 
 export default classService;
