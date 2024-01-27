@@ -23,8 +23,8 @@ export class ReceiverService {
     return `This action returns a #${id} receiver`;
   }
 
-  update(id: number, updateReceiverDto: UpdateReceiverDto) {
-    return `This action updates a #${id} receiver`;
+  update(where : any, updateReceiverDto: UpdateReceiverDto) {
+    return this.receiverRepository.update(where, updateReceiverDto);
   }
 
   remove(id: number) {

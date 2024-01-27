@@ -1,1 +1,3 @@
-export class CreateReceiverDto {}
+export class CreateReceiverDto {
+    notificationId: number
+}

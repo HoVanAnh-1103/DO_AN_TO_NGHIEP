@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -36,7 +36,7 @@ const menuTeacher: ItemType<MenuItemType>[] = [
     icon: <ScheduleOutlined />,
     children: [
       {
-        label: <Link to="dang-ky-lich-day">Đăng ký lịch dạy</Link>,
+        label: <Link to="dang-ky-lich-day">Xác nhận lịch dạy</Link>,
         key: "dang-ky-lich-day",
       },
       {
@@ -66,7 +66,7 @@ const menuTeacher: ItemType<MenuItemType>[] = [
   },
   {
     key: "thong-tin-ca-nhan",
-    label: <Link to='thong-tin-ca-nhan'> Thông tin cá nhân</Link>,
+    label: <Link to="thong-tin-ca-nhan"> Thông tin cá nhân</Link>,
     icon: <UserOutlined />,
   },
   { key: "cai-dat", label: "Cài đặt", icon: <SettingFilled /> },
@@ -75,19 +75,19 @@ const menuTeacher: ItemType<MenuItemType>[] = [
 const menuPM: ItemType<MenuItemType>[] = [
   {
     key: "quan-li-chung",
-    label: "Chung",
+    label: "Quản lý chung",
     icon: <UnorderedListOutlined />,
     children: [
       {
-        label: <Link to={"class-management"}>Cập nhật lớp học</Link>,
+        label: <Link to={"class-management"}> Quản lý lớp học</Link>,
         key: "quan-li-lop-hoc",
       },
       {
-        label: <Link to={"subject-management"}>Cập nhật môn học</Link>,
+        label: <Link to={"subject-management"}>Quản lý môn học</Link>,
         key: "quan-li-mon-hoc",
       },
       {
-        label: <Link to={"room-management"}>Cập nhật phòng</Link>,
+        label: <Link to={"room-management"}>Quản lý phòng</Link>,
         key: "quan-li-phong",
       },
 
@@ -96,7 +96,7 @@ const menuPM: ItemType<MenuItemType>[] = [
         key: "quan-li-nguoi-dung",
       },*/
       {
-        label: <Link to={"class-management"}>Tạo lịch dạy</Link>,
+        label: <Link to={"class-management"}>Quản lý lịch dạy</Link>,
         key: "tao-lich-day",
       },
     ],
@@ -117,9 +117,9 @@ const menuPM: ItemType<MenuItemType>[] = [
         // icon : <FormOutlined />
       },
       {
-        key: 'duyet-dang-ky-hoc-sinh',
-        label: <Link to={'duyet-dang-ky-hoc-sinh'}>Duyệt đăng ký học</Link>
-      }
+        key: "duyet-dang-ky-hoc-sinh",
+        label: <Link to={"duyet-dang-ky-hoc-sinh"}>Duyệt đăng ký học</Link>,
+      },
     ],
   },
   {
@@ -175,7 +175,11 @@ const App: React.FC = () => {
       },
     },
   ];
-  console.log(user, user?.user?.roles[0].name);
+  useEffect(() => {
+    if (user?.user?.roles?.[0].name === UserRoleEnum.STUDENT) {
+      navigate("/hoc-sinh/lich-hoc");
+    }
+  }, [user]);
   return (
     <Layout hasSider>
       <Sider
@@ -204,13 +208,13 @@ const App: React.FC = () => {
           mode="inline"
           defaultSelectedKeys={["quan-li-lop-hoc"]}
           items={
-            user?.user?.roles[0].name == UserRoleEnum.PM
+            user?.user?.roles?.[0].name == UserRoleEnum.PM
               ? menuPM
-              : user?.user?.roles[0].name === UserRoleEnum.STUDENT
-                ? menuStudent
-                : menuTeacher
+              : user?.user?.roles?.[0].name === UserRoleEnum.STUDENT
+              ? menuStudent
+              : menuTeacher
           }
-        // style={{ fontSize: "16px", fontWeight: 500 }}
+          // style={{ fontSize: "16px", fontWeight: 500 }}
         />
       </Sider>
       <Layout style={{ marginLeft: 200 }}>

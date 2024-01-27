@@ -196,7 +196,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
             // initialValues={{ modifier: 'public' }}
             >
                 <Row gutter={24}>
-                    <Col span={8}> <Form.Item
+                    <Col span={12}> <Form.Item
                         name="name"
                         label="Tên"
                         rules={[{ required: true, message: 'Please input the title of collection!' }]}
@@ -225,7 +225,7 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
                                 }}
                             />
                         </Form.Item></Col>
-                    <Col span={8}>
+                    <Col span={12}>
                         <Form.Item name="subjectId" className="collection-create-form_last-form-item" label='Môn học'>
                             <Select
                                 showSearch
@@ -254,79 +254,13 @@ const ClassCreatingModal: React.FC<CollectionCreateFormProps> = ({
 
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
-                        <p>Lịch học:</p>
-                        <div>
-                            <Space direction='vertical'>
-                                {
-                                    schedule.map((s: any, index: number) => {
-                                        return <Tag closable hidden={false} key={`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`} onClose={() => {
-                                            setSchedule(schedule.filter((sche: any) => {
-                                                return !(s.caId == sche.caId && s.day == sche.day && s.roomId == sche.roomId)
-                                            }))
-                                        }} >{`${daysInWeek[s.day]} ${cas[s.caId].start}-${cas[s.caId].end} Phòng ${rooms.find((room: any) => room.value == s.roomId)?.label}`}</Tag>
-                                    })
-                                }
-
-                            </Space>
-                        </div>
-                    </Col>
+               
                 </Row>
 
 
 
             </Form>
-            {/* <Paper>
-                <Scheduler
-                    height={500}
-                    data={appointments}
-                >
-                    <ViewState
-                        currentDate={currentDate}
-                    />
-                    <WeekView
-                        startDayHour={7}
-                        endDayHour={19}
-                        timeTableCellComponent={TimeTableCell}
-                        dayScaleCellComponent={DayScaleCell}
-                    />
-                    <Appointments appointmentComponent={({ children, style, data, ...restProps }: any) => {
-                        let selected = false
-                        if (schedule.find((sche: any) => {
-                            return sche.caId == data.caId && sche.day == data.day && roomSelected == sche.roomId
-                        })) selected = true
-                        if (selected) {
-                            data.title = 'Đã chọn'
-                        } else {
-                            data.title = 'Có thể chọn'
-                        }
-                        return (
-
-                            <Appointments.Appointment
-                                key={data.day + data.start + data.end}
-                                onHover={() => {
-                                    console.log('hover');
-
-                                }}
-                                {...restProps}
-                                data={data}
-                                style={{
-                                    ...style,
-                                    backgroundColor: selected ? '#5BB318' : data.backgroundColor,
-                                }}
-                            >
-                                <div>{children}</div>
-                            </Appointments.Appointment>
-                        )
-                    }} />
-
-                    <AppointmentTooltip
-
-                        onAppointmentMetaChange={onSelected} visible={false} />
-
-
-                </Scheduler>
-            </Paper> */}
+            
         </Modal>
     );
 };

@@ -20,6 +20,8 @@ export class NotificationService {
   }
 
   findAllForTeacher(userId) {
+    console.log(userId);
+    
     return this.notificationRepository.find({
       where: {
         receivers: {
@@ -27,7 +29,8 @@ export class NotificationService {
         }
       },
       relations:{
-        user: true
+        user: true,
+        receivers: true
       }
     });
   }

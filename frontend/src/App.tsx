@@ -21,6 +21,7 @@ import Schedule from "./pages/Dashboard/Student/Schedule";
 import TeacherInfo from "./pages/Dashboard/Teacher/TeacherInfo/TeacherInfo";
 import TeacherNotification from "./pages/Dashboard/Teacher/TeacherNotification";
 import ComfirmClass from "./pages/Dashboard/PM/ComfirmClass";
+import HomeStudent from "./pages/Student";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,14 +36,10 @@ const router = createBrowserRouter([
       { path: "dang-ky-lich-day", element: <SignUpSchedule /> },
       { path: "quan-ly-giao-vien", element: <TeacherManagement /> },
       { path: "quan-ly-hoc-sinh", element: <StudentManagement /> },
-      { path: 'duyet-dang-ky-hoc-sinh', element: <ApprovedStudent /> },
-      { path: 'thong-tin-ca-nhan', element: <TeacherInfo /> },
-      { path: 'thong-bao-giao-vien', element: <TeacherNotification /> },
-      { path: 'xac-nhan-lop-hoc', element: <ComfirmClass />},
-      {
-        path: "hoc-sinh",
-        children: [{ path: "dang-ky-lich-hoc", element: <ScheduleSignUpClass /> }, { path: "lich-hoc", element: <Schedule /> }],
-      },
+      { path: "duyet-dang-ky-hoc-sinh", element: <ApprovedStudent /> },
+      { path: "thong-tin-ca-nhan", element: <TeacherInfo /> },
+      { path: "thong-bao-giao-vien", element: <TeacherNotification /> },
+      { path: "xac-nhan-lop-hoc", element: <ComfirmClass /> },
     ],
   },
   {
@@ -52,6 +49,14 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "hoc-sinh",
+    element: <HomeStudent></HomeStudent>,
+    children: [
+      { path: "dang-ky-lich-hoc", element: <ScheduleSignUpClass /> },
+      { path: "lich-hoc", element: <Schedule /> },
+    ],
   },
 ]);
 function App() {

@@ -74,7 +74,7 @@ function SignUpSchedule() {
                 minHeight: '100vh',
             }}
         >
-            <h3>Đăng ký</h3>
+            <h3> Danh sách xác nhận lịch dạy</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px' }}>
                 <Space.Compact size="middle">
                     <Input addonBefore={<SearchOutlined />} placeholder="Tìm kiếm" />
@@ -128,10 +128,10 @@ function SignUpSchedule() {
                         <Space size="middle">
                             {record?.signs?.length ? <Button type="primary" onClick={async () => {
                                 await confirm({
-                                    title: 'Xác nhận Đăng ký dạy lớp',
+                                    title: 'Xác nhận lịch dạy',
                                     content: (
                                         <>
-                                            Xác nhận đăng ký lớp <b>{record.name}</b>
+                                            Xác nhận lịch dạy <b>{record.name}</b>
                                         </>
                                     ),
                                     okText: "Xác nhận",
@@ -159,7 +159,7 @@ function SignUpSchedule() {
                                     }
                                 });
                             }}>
-                                Đăng ký
+                                Xác nhận
                             </Button>
                             }
 

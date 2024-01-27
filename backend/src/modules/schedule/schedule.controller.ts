@@ -11,6 +11,10 @@ export class ScheduleController {
   create(@Body() createScheduleDto: CreateScheduleDto) {
     return this.scheduleService.create(createScheduleDto);
   }
+  @Post('getScheduleByFilter')
+  getScheduleByFilter(@Body() createScheduleDto: any){
+    return this.scheduleService.getScheduleByFilter(createScheduleDto);
+  }
 
   @Get()
   findAll() {

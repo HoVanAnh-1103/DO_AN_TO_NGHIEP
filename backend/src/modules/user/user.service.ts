@@ -81,7 +81,9 @@ export class UserService {
 
 
   async createStudent(createUserDto: CreateUserDto) {
-    const hashPassword = await bcrypt.hash('12345', 10);
+    let hashPassword = await bcrypt.hash('12345', 10);
+    if(createUserDto.password) hashPassword = await bcrypt.hash(createUserDto.password, 10);
+
 
     const role = new Role();
     role.id = 3;

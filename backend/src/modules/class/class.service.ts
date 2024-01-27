@@ -7,7 +7,10 @@ import { Repository } from 'typeorm';
 import { Schedule } from '../schedule/entities/schedule.entity';
 import { cas } from 'src/constants';
 import { ScheduleService } from '../schedule/schedule.service';
-import { Notification, notificationTypeEnum } from '../notification/entities/notification.entity';
+import {
+  Notification,
+  notificationTypeEnum,
+} from '../notification/entities/notification.entity';
 import { NotificationService } from '../notification/notification.service';
 import { CreateNotificationDto } from '../notification/dto/create-notification.dto';
 import { Receiver } from '../receiver/entities/receiver.entity';
@@ -15,17 +18,16 @@ import { ReceiverService } from '../receiver/receiver.service';
 
 @Injectable()
 export class ClassService {
-
   constructor(
     @InjectRepository(Class)
     private classRepository: Repository<Class>,
     private readonly receiverService: ReceiverService,
     private scheduleService: ScheduleService,
-    private notificationService: NotificationService
-  ) { }
+    private notificationService: NotificationService,
+  ) {}
 
   async create(createClassDto: CreateClassDto) {
-    console.log(createClassDto)
+    console.log(createClassDto);
     const cls = await this.classRepository.save({
       name: createClassDto.name,
       subject: [{ id: createClassDto.subjectId }],
@@ -34,12 +36,10 @@ export class ClassService {
       active: true,
       size: +createClassDto.size,
       teacherId: createClassDto.teacherId,
-
-    })
-
+    });
 
     createClassDto.schedules.forEach(async (data) => {
-      console.log("CHECK", {
+      console.log('CHECK', {
         active: true,
         start: cas[data.caId].start,
         end: cas[data.caId - 1].end,
@@ -47,8 +47,8 @@ export class ClassService {
         typeId: 1,
         day: data.day,
         roomId: data.roomId,
-        classId: cls.id
-      })
+        classId: cls.id,
+      });
       await this.scheduleService.create({
         active: true,
         start: cas[data.caId - 1].start,
@@ -57,33 +57,36 @@ export class ClassService {
         typeId: 1,
         day: data.day,
         roomId: data.roomId,
-        classId: cls.id
-      } as Schedule)
-    })
+        classId: cls.id,
+      } as Schedule);
+    });
     if (createClassDto.teacherId) {
-      const noti = new Notification()
-      noti.content = JSON.stringify({className: createClassDto.name, classId: cls.id})
+      const noti = new Notification();
+      noti.content = JSON.stringify({
+        className: createClassDto.name,
+        classId: cls.id,
+      });
       noti.time = new Date();
-      noti.senderId = createClassDto.senderId
-      noti.type = notificationTypeEnum.THEM_LOP
+      noti.senderId = createClassDto.senderId;
+      noti.type = notificationTypeEnum.THEM_LOP;
 
-      const re = new Receiver()
+      const re = new Receiver();
       re.userId = createClassDto.teacherId;
-      re.isReaded = false
-      
+      re.isReaded = false;
+
       // noti.receivers = [re]
-      const n = await this.notificationService.create(noti)
-      
-      re.notificationId = n.id
-      this.receiverService.create(re)
+      const n = await this.notificationService.create(noti);
+
+      re.notificationId = n.id;
+      this.receiverService.create(re);
     }
-    return this.findOne(cls.id)
+    return this.findOne(cls.id);
   }
 
   async approvedClassByTeacher(createClassDto: CreateClassDto) {
-    const cls :any= createClassDto.id
+    const cls: any = createClassDto.id;
     createClassDto.schedules.forEach(async (data) => {
-      console.log("CHECK", {
+      console.log('CHECK', {
         active: true,
         start: cas[data.caId].start,
         end: cas[data.caId - 1].end,
@@ -91,8 +94,8 @@ export class ClassService {
         typeId: 1,
         day: data.day,
         roomId: data.roomId,
-        classId: cls.id
-      })
+        classId: cls.id,
+      });
       await this.scheduleService.create({
         active: true,
         start: cas[data.caId - 1].start,
@@ -101,11 +104,23 @@ export class ClassService {
         typeId: 1,
         day: data.day,
         roomId: data.roomId,
-        classId: cls
-      } as Schedule)
-    })
+        classId: cls,
+      } as Schedule);
+      console.log({
+        notificationId: createClassDto.notificationId,
+        userId: createClassDto.teacherId,
+      });
+      
+      await this.receiverService.update(
+        {
+          notificationId: createClassDto.notificationId,
+          userId: createClassDto.teacherId,
+        },
+        { isReaded: true },
+      );
+    });
 
-    return this.findOne(cls.id)
+    return this.findOne(cls.id);
   }
 
   findAll() {
@@ -114,14 +129,13 @@ export class ClassService {
       relations: {
         subject: true,
         teacher: true,
-        schedules: { room: true }
+        schedules: { room: true },
       },
       select: {
         teacher: { fullName: true },
-      }
-    })
+      },
+    });
   }
-  
 
   findOne(id: number) {
     return this.classRepository.findOne({
@@ -129,19 +143,19 @@ export class ClassService {
       relations: {
         subject: true,
         teacher: true,
-        schedules: { room: true }
+        schedules: { room: true },
       },
       select: {
         teacher: { fullName: true },
-      }
+      },
     });
   }
 
   update(id: number, updateClassDto: UpdateClassDto) {
-    return this.classRepository.update({ id }, updateClassDto)
+    return this.classRepository.update({ id }, updateClassDto);
   }
 
   remove(id: number) {
-    return this.classRepository.update({ id }, { active: false })
+    return this.classRepository.update({ id }, { active: false });
   }
 }

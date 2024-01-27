@@ -35,8 +35,8 @@ import roomService from "@services/room.service";
 import subjectService from "@services/subject.service";
 import { cas, daysInWeek } from "@utils/constants";
 import classService from "@services/class.service";
-import { Routes, Route, useParams } from "react-router-dom";
-import dayjs from 'dayjs';
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 interface Values {
   title: string;
@@ -147,6 +147,8 @@ const ComfirmClass: React.FC = ({}) => {
   const [roomSelected, setRoomSelected] = useState();
   const [subjects, setSubjects] = useState([]);
   const [currentClass, setCurrentClass] = useState<any>();
+  const [notificationid, setNotificationid] = useState<number>();
+  const navigate = useNavigate();
   // const [currentClass, setC]
   let params = useParams();
 
@@ -171,7 +173,7 @@ const ComfirmClass: React.FC = ({}) => {
         })
       );
       setRoomSelected(data[0].id);
-      form.setFieldValue('roomId', data[0].id)
+      form.setFieldValue("roomId", data[0].id);
     });
     subjectService.get().then((data) => {
       setSubjects(
@@ -187,6 +189,8 @@ const ComfirmClass: React.FC = ({}) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const classId = urlParams.get("classId");
+    const notificationid = urlParams.get("notificationId");
+    if (notificationid) setNotificationid(+notificationid);
     if (classId) {
       classService.getOne(classId).then((data) => {
         setCurrentClass(data);
@@ -195,8 +199,7 @@ const ComfirmClass: React.FC = ({}) => {
           { name: "size", value: data.size },
           { name: "teacherId", value: data.teacherId },
           { name: "subjectId", value: data.subject.map((s: any) => s.id) },
-            {name: 'dateRange', value: [dayjs(data.start), dayjs(data.end)]}
-
+          { name: "dateRange", value: [dayjs(data.start), dayjs(data.end)] },
         ]);
       });
     }
@@ -266,22 +269,31 @@ const ComfirmClass: React.FC = ({}) => {
         layout="vertical"
         name="form_in_modal"
         onFinish={() => {
-            form
-                .validateFields()
-                .then((values) => {
-                    console.log(values);
+          form
+            .validateFields()
+            .then((values) => {
+              console.log(values);
 
-                    // onCreate({ ...values, schedules: schedule });
-                    // console.log({ ...values, schedules: schedule, id: currentClass.id });
-                    console.log(currentClass);
-                    
-                    classService.approvedClassByTeacher ({ ...values, schedules: schedule, id: currentClass.id })
-                    // form.resetFields();
-                    // setSchedule([])
+              // onCreate({ ...values, schedules: schedule });
+              // console.log({ ...values, schedules: schedule, id: currentClass.id });
+              console.log(currentClass);
+
+              classService
+                .approvedClassByTeacher({
+                  ...values,
+                  schedules: schedule,
+                  id: currentClass.id,
+                  notificationId: notificationid,
                 })
-                .catch((info) => {
-                    console.log('Validate Failed:', info);
+                .then(() => {
+                  navigate("/lich-day-ca-nhan");
                 });
+              // form.resetFields();
+              // setSchedule([])
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
         }}
         // initialValues={{ modifier: 'public' }}
       >
@@ -298,7 +310,7 @@ const ComfirmClass: React.FC = ({}) => {
                 },
               ]}
             >
-              <Input disabled/>
+              <Input disabled />
             </Form.Item>
             <Form.Item name="size" initialValue={0} label="Sĩ số">
               <Input disabled type="number" />
@@ -309,7 +321,7 @@ const ComfirmClass: React.FC = ({}) => {
               label="Giáo viên"
             >
               <Select
-              disabled
+                disabled
                 showSearch
                 placeholder="Giáo viên"
                 optionFilterProp="children"
@@ -325,7 +337,7 @@ const ComfirmClass: React.FC = ({}) => {
               label="Môn học"
             >
               <Select
-              disabled
+                disabled
                 showSearch
                 placeholder="Môn học"
                 optionFilterProp="children"
@@ -350,7 +362,7 @@ const ComfirmClass: React.FC = ({}) => {
                 options={rooms}
               />
             </Form.Item>
-            <Form.Item  label={"Bắt đầu/ Kết thúc"} name="dateRange">
+            <Form.Item label={"Bắt đầu/ Kết thúc"} name="dateRange">
               <RangePicker disabled />
             </Form.Item>
           </Col>

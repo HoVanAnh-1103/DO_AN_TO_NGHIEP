@@ -245,7 +245,7 @@ const SignUpComfirm: React.FC<CollectionCreateFormProps> = ({
       open={open}
       title="Xác nhận đăng ký"
       okText="Xác nhận"
-      cancelText="Hủy"
+      cancelText="Từ chối"
       onCancel={onCancel}
       width={1200}
       onOk={() => {

@@ -19,7 +19,7 @@ export class NotificationController {
 
   @Get('/teacher')
   findAllForTeacher(@Request() req : any) {
-    return this.notificationService.findAllForTeacher(req.user.id);
+    return this.notificationService.findAllForTeacher(req.user.sub);
   }
 
   // @Get(':id')

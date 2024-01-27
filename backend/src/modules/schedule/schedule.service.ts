@@ -3,7 +3,7 @@ import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { Schedule } from './entities/schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class ScheduleService {
@@ -12,6 +12,18 @@ export class ScheduleService {
     private scheduleRepository: Repository<Schedule>,) { }
   create(createScheduleDto: CreateScheduleDto) {
     return this.scheduleRepository.save(createScheduleDto);
+  }
+
+  getScheduleByFilter(filter){
+    // return this.scheduleRepository.find(filter)
+    return this.scheduleRepository.find({where:{
+      class:{
+        start: MoreThan(new Date()),
+        end: LessThan(new Date()),
+        
+      },
+       roomId: 12
+    }})
   }
 
   findAll() {
