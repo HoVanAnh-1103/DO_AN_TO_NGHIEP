@@ -31,6 +31,9 @@ export class NotificationService {
       relations:{
         user: true,
         receivers: true
+      },
+      order: {
+       id: "DESC" 
       }
     });
   }

@@ -39,16 +39,6 @@ export class ClassService {
     });
 
     createClassDto.schedules.forEach(async (data) => {
-      console.log('CHECK', {
-        active: true,
-        start: cas[data.caId].start,
-        end: cas[data.caId - 1].end,
-        ten: '',
-        typeId: 1,
-        day: data.day,
-        roomId: data.roomId,
-        classId: cls.id,
-      });
       await this.scheduleService.create({
         active: true,
         start: cas[data.caId - 1].start,
@@ -86,16 +76,7 @@ export class ClassService {
   async approvedClassByTeacher(createClassDto: CreateClassDto) {
     const cls: any = createClassDto.id;
     createClassDto.schedules.forEach(async (data) => {
-      console.log('CHECK', {
-        active: true,
-        start: cas[data.caId].start,
-        end: cas[data.caId - 1].end,
-        ten: '',
-        typeId: 1,
-        day: data.day,
-        roomId: data.roomId,
-        classId: cls.id,
-      });
+
       await this.scheduleService.create({
         active: true,
         start: cas[data.caId - 1].start,
@@ -134,6 +115,9 @@ export class ClassService {
       select: {
         teacher: { fullName: true },
       },
+      order: {
+        id: 'DESC'
+      }
     });
   }
 

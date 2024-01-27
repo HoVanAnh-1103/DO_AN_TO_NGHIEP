@@ -16,7 +16,9 @@ export class RoomService {
   }
 
   findAll() {
-    return this.roomPrository.find({ where: { active: true } })
+    return this.roomPrository.find({ where: { active: true }, order: {
+      id: 'DESC'
+    } })
   }
 
   findOne(id: number) {

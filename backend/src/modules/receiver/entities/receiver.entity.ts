@@ -20,8 +20,8 @@ export class Receiver {
     @JoinColumn({name: 'nguoiDungId'})
     user: User
 
-    @ManyToOne(() => Notification, (user) => user.receivers)
-    @JoinColumn({name: 'nguoiDungId'})
+    @ManyToOne(() => Notification, (n) => n.receivers)
+    @JoinColumn({name: 'thongBaoId'})
     notification: Notification
 
 
